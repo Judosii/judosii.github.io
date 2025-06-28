@@ -68,6 +68,11 @@
     let posY = 300;
     const speed = 3; // pixels per frame
     
+    const dir = {
+        facingRight:false,
+        facingLeft:false
+    };
+    
     const KeyPressed = {
         ArrowLeft:false,
         ArrowRight: false,
@@ -75,38 +80,65 @@
         ArrowDown: false
     };
     
-    document.addEventListener('keydown',(e)=> {
-        if(e.key in KeyPressed){
-            KeyPressed[e.key] = true;
-        }
-    });
-    
-    document.addEventListener('keyup', (e)=> {
-        if(e.key in KeyPressed){
-            KeyPressed[e.key] = false
-        }
-    });
-    
-    function gameLoop(){
-        if (KeyPressed.ArrowLeft){
-            posX -= speed;
-        }
-        if (KeyPressed.ArrowRight){
-            posX += speed;
-        }
-        if (KeyPressed.ArrowUp){
-            posY -= speed;
-        }
-        if (KeyPressed.ArrowDown){
-            posY += speed;
-        }
+    function handleInput(){
+        document.addEventListener('keydown',(e)=> {
+            if(e.key in KeyPressed){
+                KeyPressed[e.key] = true;
+            }
+        });
 
-        character.style.left = posX+'px';
-        character.style.top = posY+'px';
-        
-        requestAnimationFrame(gameLoop)
+        document.addEventListener('keyup', (e)=> {
+            if(e.key in KeyPressed){
+                KeyPressed[e.key] = false
+            }
+        });
     }
     
+    function updatePosition(){
+        let dirX = 0;
+        let dirY = 0;
+        // know what direction to go to
+        if (KeyPressed.ArrowLeft){
+            dirX-=1;
+            //posX -= speed;
+        }
+        if (KeyPressed.ArrowRight){
+            dirX +=1;
+            //posX += speed;
+        }
+        if (KeyPressed.ArrowUp){
+            dirY -=1;
+            //posY -= speed;
+        }
+        if (KeyPressed.ArrowDown){
+            dirY +=1;
+            //posY += speed;
+        }
+        //Calculate vector before applying additional speed
+        
+        let length = Math.sqrt(dirX**2+dirY**2)
+        
+        if (dirX !==0){
+            dirX = dirX/length;
+        }
+        if (dirY !== 0){
+            dirY = dirY/length;
+        }
+        
+        posX += dirX* speed;
+        posY += dirY* speed;
+    }
+    function render(){
+        character.style.left = posX+'px';
+        character.style.top = posY+'px';
+    }
+    
+    function gameLoop(){
+        updatePosition()
+        render()
+        requestAnimationFrame(gameLoop)
+    }
+    handleInput();
     gameLoop();
     
 </script>
