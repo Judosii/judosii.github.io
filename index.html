@@ -10,7 +10,7 @@
         color: white;
         padding: 32px 48px;
         text-align: center;
-        text-decoration: none;
+        text-decoration: indigo;
         display: inline-block;
         font-size: 16px;
         margin: 4px 2px;
@@ -20,15 +20,35 @@
     .button1 {
         background-color: white;
         color: black;
-        border: 2px solid #04AA6D;
+        border: 2px solid black;
     }
 
     .button1:hover {
-        background-color: #04AA6D;
-        color: white;
+        background-color: rgba(4, 170, 109, 0.5);
+        color: black;
     }
 
     .button1 {background-color: #04AA6D}
+
+    body{
+        margin: 0;
+        overflow: hidden;
+        background-color: #eef;
+    }
+    #gameArea{
+        width: 75vw;
+        height: 75vh;
+        position: relative;
+        background-color: #ccf;
+    }
+    #character{
+        width: 50px;
+        height: 50px;
+        background-color: indigo;
+        position: absolute;
+        top:100px;
+        left: 100px;
+    }
     
     </style>
     
@@ -37,6 +57,59 @@
 <body>
     <h1> hitting the naenae </h1>
     <p> button test: </p>
-    <button class=" button button1">Green</button>
+    <button class = "button button1"> this is a button </button>
+    
+    <div id=" gameArea">  
+        <div id="character">  </div>
+    </div>
+<script>
+    const character = document.getElementById('character');
+    let posX = 300;
+    let posY = 300;
+    const speed = 3; // pixels per frame
+    
+    const KeyPressed = {
+        ArrowLeft:false,
+        ArrowRight: false,
+        ArrowUp: false,
+        ArrowDown: false
+    };
+    
+    document.addEventListener('keydown',(e)=> {
+        if(e.key in KeyPressed){
+            KeyPressed[e.key] = true;
+        }
+    });
+    
+    document.addEventListener('keyup', (e)=> {
+        if(e.key in KeyPressed){
+            KeyPressed[e.key] = false
+        }
+    });
+    
+    function gameLoop(){
+        if (KeyPressed.ArrowLeft){
+            posX -= speed;
+        }
+        if (KeyPressed.ArrowRight){
+            posX += speed;
+        }
+        if (KeyPressed.ArrowUp){
+            posY -= speed;
+        }
+        if (KeyPressed.ArrowDown){
+            posY += speed;
+        }
+
+        character.style.left = posX+'px';
+        character.style.top = posY+'px';
+        
+        requestAnimationFrame(gameLoop)
+    }
+    
+    gameLoop();
+    
+</script>
+
 </body>
 </html>
