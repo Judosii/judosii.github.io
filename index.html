@@ -16,6 +16,7 @@
         margin: 4px 2px;
         transition-duration: 0.4s;
         cursor: pointer;
+        
     }
     .button1 {
         background-color: #04AA6D;
@@ -36,11 +37,8 @@
         background-color: #eef;
     }
     
-    #gameArea{
-        width: 990px;
-        height: 540px;
-        position: relative;
-        background-color: #ccf;
+    #zeldaGameArea{
+        
     }
     
     #playerCharacter{
@@ -52,13 +50,11 @@
         background-image: url('img/testSpriteSheet.png');
         background-repeat: no-repeat;
         background-position:  0;
-        background-position-x: -32px;
+        background-position-x: -0px;
         position: absolute;
-        top:300px;
-        left:300px;
+        top:100px;
+        left:150px;
     }
-    
-    
     
     .window{
         position: absolute;
@@ -75,6 +71,8 @@
         padding: 5px;
         cursor: move;
         user-select: none;
+        
+        flex: 0 0 auto;
     }
 
     .content {
@@ -91,25 +89,30 @@
     
     <h1> hitting the naenae </h1>
     <p> button test: </p>
-    <button class = "button button1"> this is a button </button>
+    <button class = "button button1" onclick = "startLink()"> activate Link </button>
     
     <!-- Comments here can be made like this -->
     <div id="output">  </div>
     
-    <div class = "window" id = "window1" style="top: 50px; left: 150px" >
-        <div class="title-bar">Window 1</div>
-        <div class="content">
-            <div id=" gameArea">
-                <div id="playerCharacter">
-                </div>
-            </div>
+    <div class = "window" id = "ZeldaWindow" style="top: 100px; left: 150px" >
+        <div class="title-bar">Link's Awakening.rom</div>
+        <div id="zeldaGameArea">
+            <div id="playerCharacter"> </div>
         </div>
     </div>
 <script>
     
+    function startLink(){
+        ActivatePlayer();
+    }
+    
     // ##### USEFUL STUFF #####
     
+    // reminder for later this is how you print:
+    // console.log()
+    
     // ### MATH ###
+    // These functions should always return something and never save something ig
     function NormalizeVector2(vecX, vecY) {
         let length = Math.sqrt(vecX ** 2 + vecY ** 2);
         if (length === 0) return { x: 0, y: 0 };  // Optional: Handle zero vector case
@@ -120,10 +123,24 @@
         };
     }
     
+    //tells you if an entity is outside a given window
+    function DetectIfOutsideOfWindow(entity, wind){
+
+        const entityRect = entity.getBoundingClientRect()
+        const windowRect = wind.getBoundingClientRect()
+
+        const outLeft = entityRect.left < windowRect.left ;
+        const outRight = entityRect.right > windowRect.right;
+        const outTop = entityRect.top < windowRect.top;
+        const outDown = entityRect.bottom > windowRect.bottom;
+
+        return outLeft || outRight || outTop || outDown
+    }
+    
     // ### Animation stuff ###
     function PlayAnimation(animationName){
         if (animationName === PlayerAnimationState.currentAnimation){ return }
-        //console.log(animationName)
+        
         if (PlayerAnimationList[animationName]){
             PlayerAnimationState.currentAnimation = animationName;
             PlayerAnimationState.currentFrameIndex = 0;
@@ -164,8 +181,10 @@
         // SET ACTUAL FRAME HERE
         element.style.backgroundPosition = `${offsetX}px, 0`
 
+        //Get the size of the sprite with scale * Math.sign(scale)
+        // -1 * -1, is 1 ; else 1*1 is 1
         const size = element.style.scale
-        console.log(size[1])
+        
         if (frameData.flipped){
             element.style.scale = "-2 2";
         }
@@ -183,10 +202,12 @@
     
     // ##### END OF USEFUL STUFF #####
     
+    
+    
     // ++ ALL PLAYER CHARACTER STUFF ++
     const character = document.getElementById('playerCharacter');
-    let posX = 300;
-    let posY = 300;
+    let posX = 150;
+    let posY = 100;
     
     const speed = 3; // pixels per frame
     
@@ -240,10 +261,41 @@
         frameDuration: 500 //ms per frame
     }
     
+    function ActivatePlayer(){
+        curState = PlayerStates[1];
+    }
+    
     const PlayerStates = [
+        "Inactive",
         "Idle",
         "Moving",
         "AreaTransition"
+    ]
+    let curState = PlayerStates[0];
+    
+    function PlayerStateLogic(_delta){
+        switch (curState){
+            case PlayerStates[0]: // Inactive state (get activated somehow), get set to Idle Later
+                break;
+            case PlayerStates[1]: // Idle State
+                IdleState(_delta)
+                break;
+            case PlayerStates[2]: // Moving State
+                MovingState(_delta)
+                break;
+            case PlayerStates[3]: // Area Transition
+                AreaTransitionState(_delta)
+                break;
+
+        }
+    }
+    
+    //Will be useful but has to be set to what dir the player is looking
+    const CharacterDirs = [
+        "up",
+        "down",
+        "left",
+        "right"
     ]
     
     function _HandleInput(){
@@ -259,7 +311,6 @@
             }
         });
     }
-    
     function UpdatePosition(){
         let vecDir = {"x":0,"y":0}
         
@@ -286,12 +337,15 @@
             isMoving = true;
             PlayAnimation("moveDown")
         }
-        //Calculate vector before applying additional speed
-        
         vecDir = NormalizeVector2(vecDir.x,vecDir.y)
         
         posX += vecDir.x* speed;
         posY += vecDir.y* speed;
+
+        let win = document.getElementById("ZeldaWindow")
+        if (DetectIfOutsideOfWindow(character,win)){
+            
+        }
     }
 
     function RenderPosition(){
@@ -304,22 +358,28 @@
         const now = performance.now()
         const deltaTime = now - lastTime;
         lastTime = now;
-        
-        UpdateAnimation(deltaTime)
-        
-        UpdatePosition()
-        RenderPosition()
+
+        PlayerStateLogic(deltaTime)
         requestAnimationFrame(gameLoop)
     }
     _HandleInput();
     gameLoop();
     
-    function DetectScreenEdge(){
-        // character is in game area
-        // which is in content
-        return 0
+    function IdleState(_d){
+
+        UpdateAnimation(_d)
+
+        UpdatePosition()
+        RenderPosition()
+    }
+
+    function MovingState(_d){
+    }
+    function AreaTransitionState(_d){
     }
     
+    function TemplateState(_d){
+    }
     
     // ++ END OF CHARACTER STUFF ++
     
@@ -348,7 +408,9 @@
         });
     }
 
-    makeDraggable(document.getElementById('window1'))
+    makeDraggable(document.getElementById('ZeldaWindow'))
+    
+    // END OF DRAGGABLE WINDOW STUFF
     
 </script>
 
