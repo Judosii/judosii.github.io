@@ -18,7 +18,7 @@
         cursor: pointer;
     }
     .button1 {
-        background-color: white;
+        background-color: #04AA6D;
         color: black;
         border: 2px solid black;
     }
@@ -26,10 +26,10 @@
     .button1:hover {
         background-color: rgba(4, 170, 109, 0.5);
         color: black;
+        scale: 101%;
     }
-
-    .button1 {background-color: #04AA6D}
-
+    
+    
     body{
         margin: 0;
         overflow: hidden;
@@ -58,18 +58,51 @@
         left:300px;
     }
     
+    
+    
+    .window{
+        position: absolute;
+        width: 300px;
+        height: 200px;
+        border: 1px solid #999;
+        background-color: #b9b9b9;
+        box-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+    }
+
+    .title-bar{
+        background-color: #555;
+        color: white;
+        padding: 5px;
+        cursor: move;
+        user-select: none;
+    }
+
+    .content {
+        padding: 10px;
+    }
+    
     </style>
     
     
 </head>
 <body>
+    <!-- Comments here can be made like this -->
+    
+    
     <h1> hitting the naenae </h1>
     <p> button test: </p>
     <button class = "button button1"> this is a button </button>
     
+    <!-- Comments here can be made like this -->
     <div id="output">  </div>
-    <div id=" gameArea">  
-        <div id="playerCharacter">
+    
+    <div class = "window" id = "window1" style="top: 50px; left: 150px" >
+        <div class="title-bar">Window 1</div>
+        <div class="content">
+            <div id=" gameArea">
+                <div id="playerCharacter">
+                </div>
+            </div>
         </div>
     </div>
 <script>
@@ -88,8 +121,6 @@
     }
     
     // ### Animation stuff ###
-
-
     function PlayAnimation(animationName){
         if (animationName === PlayerAnimationState.currentAnimation){ return }
         //console.log(animationName)
@@ -103,7 +134,6 @@
             console.warn(`Animation '${animationName}' does not exist in AnimationList.`);
         }
     }
-
     function UpdateAnimation(deltaTime){ //ms since last frame
         if (!PlayerAnimationState.currentAnimation) return;
 
@@ -124,7 +154,6 @@
             ApplyCurrentFrame(character)
         }
     }
-
     function ApplyCurrentFrame(element){
         const frameData = GetCurrentFrame();
         if(!frameData) return;
@@ -136,18 +165,14 @@
         element.style.backgroundPosition = `${offsetX}px, 0`
 
         const size = element.style.scale
-        console.log(size)
+        console.log(size[1])
         if (frameData.flipped){
             element.style.scale = "-2 2";
-            //element.transform = "scaleX(-1)"
         }
         else{
             element.style.scale = "2 2";
-            //element.transform = "scaleX(1)"
         }
     }
-
-
     function GetCurrentFrame(){
         if (!PlayerAnimationState.currentAnimation) return null;
 
@@ -155,13 +180,16 @@
         return frames[PlayerAnimationState.currentFrameIndex];
 
     }
-
-    const character = document.getElementById('playerCharacter');
     
+    // ##### END OF USEFUL STUFF #####
+    
+    // ++ ALL PLAYER CHARACTER STUFF ++
+    const character = document.getElementById('playerCharacter');
     let posX = 300;
     let posY = 300;
     
     const speed = 3; // pixels per frame
+    
     
     let lastTime = performance.now() //used for delta time
     
@@ -212,7 +240,13 @@
         frameDuration: 500 //ms per frame
     }
     
-    function handleInput(){
+    const PlayerStates = [
+        "Idle",
+        "Moving",
+        "AreaTransition"
+    ]
+    
+    function _HandleInput(){
         document.addEventListener('keydown',(e)=> {
             if(e.key in KeyPressed){
                 KeyPressed[e.key] = true;
@@ -226,7 +260,7 @@
         });
     }
     
-    function updatePosition(){
+    function UpdatePosition(){
         let vecDir = {"x":0,"y":0}
         
         isMoving = false;
@@ -260,7 +294,7 @@
         posY += vecDir.y* speed;
     }
 
-    function render(){
+    function RenderPosition(){
         character.style.left = posX+'px';
         character.style.top = posY+'px';
     }
@@ -273,13 +307,48 @@
         
         UpdateAnimation(deltaTime)
         
-        updatePosition()
-        render()
+        UpdatePosition()
+        RenderPosition()
         requestAnimationFrame(gameLoop)
     }
-    PlayAnimation("moveDown")
-    handleInput();
+    _HandleInput();
     gameLoop();
+    
+    function DetectScreenEdge(){
+        // character is in game area
+        // which is in content
+        return 0
+    }
+    
+    
+    // ++ END OF CHARACTER STUFF ++
+    
+    // ++ DRAGGABLE WINDOW STUFF ++
+    function makeDraggable(el) {
+        const titleBar = el.querySelector('.title-bar');
+        let offsetX = 0, offsetY = 0, isDragging = false;
+
+        titleBar.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            offsetX = e.clientX - el.offsetLeft;
+            offsetY = e.clientY - el.offsetTop;
+            document.body.style.userSelect = 'none';
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (isDragging) {
+                el.style.left = (e.clientX - offsetX) + 'px';
+                el.style.top = (e.clientY - offsetY) + 'px';
+            }
+        });
+
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+            document.body.style.userSelect = '';
+        });
+    }
+
+    makeDraggable(document.getElementById('window1'))
     
 </script>
 
