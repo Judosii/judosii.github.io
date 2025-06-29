@@ -37,13 +37,13 @@
     }
     
     #gameArea{
-        width: 75vw;
-        height: 75vh;
+        width: 990px;
+        height: 540px;
         position: relative;
         background-color: #ccf;
     }
     
-    #character{
+    #playerCharacter{
         width: 16px;
         height: 16px;
         scale: 2;
@@ -69,12 +69,94 @@
     
     <div id="output">  </div>
     <div id=" gameArea">  
-        <div id="character">
+        <div id="playerCharacter">
         </div>
     </div>
 <script>
     
-    const character = document.getElementById('character');
+    // ##### USEFUL STUFF #####
+    
+    // ### MATH ###
+    function NormalizeVector2(vecX, vecY) {
+        let length = Math.sqrt(vecX ** 2 + vecY ** 2);
+        if (length === 0) return { x: 0, y: 0 };  // Optional: Handle zero vector case
+
+        return {
+            x: vecX / length,
+            y: vecY / length
+        };
+    }
+    
+    // ### Animation stuff ###
+
+
+    function PlayAnimation(animationName){
+        if (animationName === PlayerAnimationState.currentAnimation){ return }
+        //console.log(animationName)
+        if (PlayerAnimationList[animationName]){
+            PlayerAnimationState.currentAnimation = animationName;
+            PlayerAnimationState.currentFrameIndex = 0;
+            PlayerAnimationState.frameTimer = 0;
+            ApplyCurrentFrame(character)
+        }
+        else{
+            console.warn(`Animation '${animationName}' does not exist in AnimationList.`);
+        }
+    }
+
+    function UpdateAnimation(deltaTime){ //ms since last frame
+        if (!PlayerAnimationState.currentAnimation) return;
+
+        const frames = PlayerAnimationList[PlayerAnimationState.currentAnimation];
+        if (!frames || frames.length === 0) return;
+
+
+
+        PlayerAnimationState.frameTimer += deltaTime;
+
+        if (PlayerAnimationState.frameTimer >= PlayerAnimationState.frameDuration){
+            PlayerAnimationState.frameTimer -= PlayerAnimationState.frameDuration;
+            PlayerAnimationState.currentFrameIndex++;
+
+            if(PlayerAnimationState.currentFrameIndex >= frames.length){
+                PlayerAnimationState.currentFrameIndex = 0;
+            }
+            ApplyCurrentFrame(character)
+        }
+    }
+
+    function ApplyCurrentFrame(element){
+        const frameData = GetCurrentFrame();
+        if(!frameData) return;
+
+        const frameIndex= frameData.frame;
+        const offsetX = -frameIndex * 16;
+
+        // SET ACTUAL FRAME HERE
+        element.style.backgroundPosition = `${offsetX}px, 0`
+
+        const size = element.style.scale
+        console.log(size)
+        if (frameData.flipped){
+            element.style.scale = "-2 2";
+            //element.transform = "scaleX(-1)"
+        }
+        else{
+            element.style.scale = "2 2";
+            //element.transform = "scaleX(1)"
+        }
+    }
+
+
+    function GetCurrentFrame(){
+        if (!PlayerAnimationState.currentAnimation) return null;
+
+        const frames = PlayerAnimationList[PlayerAnimationState.currentAnimation];
+        return frames[PlayerAnimationState.currentFrameIndex];
+
+    }
+
+    const character = document.getElementById('playerCharacter');
     
     let posX = 300;
     let posY = 300;
@@ -93,7 +175,7 @@
         ArrowDown: false
     };
     
-    const AnimationList = {
+    const PlayerAnimationList = {
         "idleDown" : [
             {frame:0,flipped: false}
         ],
@@ -123,8 +205,8 @@
         ]
     };
     
-    const AnimationState = {
-        currentAnimation: AnimationList.moveDown,
+    const PlayerAnimationState = {
+        currentAnimation: PlayerAnimationList.moveDown,
         currentFrameIndex: 0,
         frameTimer: 0,
         frameDuration: 500 //ms per frame
@@ -178,86 +260,9 @@
         posY += vecDir.y* speed;
     }
 
-    function NormalizeVector2(vecX, vecY) {
-        let length = Math.sqrt(vecX ** 2 + vecY ** 2);
-        if (length === 0) return { x: 0, y: 0 };  // Optional: Handle zero vector case
-
-        return {
-            x: vecX / length,
-            y: vecY / length
-        };
-    }
-    
     function render(){
         character.style.left = posX+'px';
         character.style.top = posY+'px';
-        //character.style.backgroundPosition = `${xOffset}px 0px`; // display frame
-    }
-    
-    function PlayAnimation(animationName){
-        if (animationName === AnimationState.currentAnimation){ return }
-        //console.log(animationName)
-        if (AnimationList[animationName]){
-            AnimationState.currentAnimation = animationName;
-            AnimationState.currentFrameIndex = 0;
-            AnimationState.frameTimer = 0;
-            ApplyCurrentFrame(character)
-        }
-        else{
-            console.warn(`Animation '${animationName}' does not exist in AnimationList.`);
-        }
-    }
-    
-    function UpdateAnimation(deltaTime){ //ms since last frame
-        if (!AnimationState.currentAnimation) return;
-        
-        const frames = AnimationList[AnimationState.currentAnimation];
-        if (!frames || frames.length === 0) return;
-        
-        
-        
-        AnimationState.frameTimer += deltaTime;
-        
-        if (AnimationState.frameTimer >= AnimationState.frameDuration){
-            AnimationState.frameTimer -= AnimationState.frameDuration;
-            AnimationState.currentFrameIndex++;
-            
-            if(AnimationState.currentFrameIndex >= frames.length){
-                AnimationState.currentFrameIndex = 0;
-            }
-            ApplyCurrentFrame(character)
-        }
-    } 
-    
-    function ApplyCurrentFrame(element){
-        const frameData = GetCurrentFrame();
-        if(!frameData) return;
-        
-        const frameIndex= frameData.frame;
-        const offsetX = -frameIndex * 16;
-        
-        // SET ACTUAL FRAME HERE
-        element.style.backgroundPosition = `${offsetX}px, 0`
-        
-        const size = element.style.scale
-        console.log(size)
-        if (frameData.flipped){
-            element.style.scale = "-2 2";
-            //element.transform = "scaleX(-1)"
-        }
-        else{
-            element.style.scale = "2 2";
-            //element.transform = "scaleX(1)"
-        }
-    }
-    
-    
-    function GetCurrentFrame(){
-        if (!AnimationState.currentAnimation) return null;
-        
-        const frames = AnimationList[AnimationState.currentAnimation];
-        return frames[AnimationState.currentFrameIndex];
-        
     }
     
     function gameLoop(){
