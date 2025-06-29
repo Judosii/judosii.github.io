@@ -35,28 +35,27 @@
         overflow: hidden;
         background-color: #eef;
     }
+    
     #gameArea{
         width: 75vw;
         height: 75vh;
         position: relative;
         background-color: #ccf;
     }
+    
     #character{
-        width: 50px;
-        height: 50px;
-        background-color: indigo;
+        width: 16px;
+        height: 16px;
+        scale: 2;
+        transform: scaleX(-1);
+        image-rendering: pixelated;
+        background-image: url('img/testSpriteSheet.png');
+        background-repeat: no-repeat;
+        background-position:  0;
+        background-position-x: -32px;
         position: absolute;
         top:300px;
         left:300px;
-    }
-    #dirBox{
-        width: 10px;
-        height: 10px;
-        background-color: darkred;
-        position: absolute;
-        top:20px;
-        left:50px;
-        
     }
     
     </style>
@@ -68,17 +67,24 @@
     <p> button test: </p>
     <button class = "button button1"> this is a button </button>
     
+    <div id="output">  </div>
     <div id=" gameArea">  
         <div id="character">
-            <div id="dirBox"></div>
         </div>
     </div>
 <script>
+    
     const character = document.getElementById('character');
+    
     let posX = 300;
     let posY = 300;
+    
     const speed = 3; // pixels per frame
     
+    let lastTime = performance.now() //used for delta time
+    
+    
+    let isMoving = false;
     
     const KeyPressed = {
         ArrowLeft:false,
@@ -86,6 +92,43 @@
         ArrowUp: false,
         ArrowDown: false
     };
+    
+    const AnimationList = {
+        "idleDown" : [
+            {frame:0,flipped: false}
+        ],
+        "idleUp": [
+            {frame:1,flipped: false}
+        ],
+        "idleLeft": [
+            {frame:2,flipped: true}
+        ],
+        "idleRight": [
+            {frame:2,flipped: false}
+        ],
+        "moveDown": [
+            {frame:0,flipped: false},
+            {frame:0,flipped: true}
+        ],
+        "moveUp": [
+            {frame:1,flipped: false},
+            {frame:1,flipped: true}],
+        "moveLeft": [
+            {frame:2,flipped: true},
+            {frame:3, flipped: true}
+        ],
+        "moveRight": [
+            {frame:2,flipped: false},
+            {frame:3, flipped: false}
+        ]
+    };
+    
+    const AnimationState = {
+        currentAnimation: AnimationList.moveDown,
+        currentFrameIndex: 0,
+        frameTimer: 0,
+        frameDuration: 500 //ms per frame
+    }
     
     function handleInput(){
         document.addEventListener('keydown',(e)=> {
@@ -102,60 +145,134 @@
     }
     
     function updatePosition(){
-        let dirX = 0;
-        let dirY = 0;
+        let vecDir = {"x":0,"y":0}
+        
+        isMoving = false;
+        
         // know what direction to go to
         if (KeyPressed.ArrowLeft){
-            dirX-=1;
+            vecDir.x-=1;
+            isMoving = true;
+            PlayAnimation("moveLeft")
         }
         if (KeyPressed.ArrowRight){
-            dirX +=1;
+            vecDir.x +=1;
+            isMoving = true;
+            PlayAnimation("moveRight")
         }
         if (KeyPressed.ArrowUp){
-            dirY -=1;
+            vecDir.y -=1;
+            isMoving = true;
+            PlayAnimation("moveUp")
         }
         if (KeyPressed.ArrowDown){
-            dirY +=1;
+            vecDir.y +=1;
+            isMoving = true;
+            PlayAnimation("moveDown")
         }
         //Calculate vector before applying additional speed
         
-        updateDirCube(dirX, dirY)
+        vecDir = NormalizeVector2(vecDir.x,vecDir.y)
         
-        let length = Math.sqrt(dirX**2+dirY**2)
-        
-        if (dirX !==0){
-            dirX = dirX/length;
-        }
-        if (dirY !== 0){
-            dirY = dirY/length;
-        }
-        
-        posX += dirX* speed;
-        posY += dirY* speed;
+        posX += vecDir.x* speed;
+        posY += vecDir.y* speed;
     }
-    
-    function updateDirCube(x,y){
-        let basePosX = 25;
-        let basePosY = 25;
-        const box = document.getElementById('dirBox');
-        
-        let newPosX = basePosX * x + 20;
-        let newPosY = basePosY * y + 20;
 
-        box.style.left = newPosX+'px';
-        box.style.top = newPosY+'px';
+    function NormalizeVector2(vecX, vecY) {
+        let length = Math.sqrt(vecX ** 2 + vecY ** 2);
+        if (length === 0) return { x: 0, y: 0 };  // Optional: Handle zero vector case
+
+        return {
+            x: vecX / length,
+            y: vecY / length
+        };
     }
     
     function render(){
         character.style.left = posX+'px';
         character.style.top = posY+'px';
+        //character.style.backgroundPosition = `${xOffset}px 0px`; // display frame
+    }
+    
+    function PlayAnimation(animationName){
+        if (animationName === AnimationState.currentAnimation){ return }
+        //console.log(animationName)
+        if (AnimationList[animationName]){
+            AnimationState.currentAnimation = animationName;
+            AnimationState.currentFrameIndex = 0;
+            AnimationState.frameTimer = 0;
+            ApplyCurrentFrame(character)
+        }
+        else{
+            console.warn(`Animation '${animationName}' does not exist in AnimationList.`);
+        }
+    }
+    
+    function UpdateAnimation(deltaTime){ //ms since last frame
+        if (!AnimationState.currentAnimation) return;
+        
+        const frames = AnimationList[AnimationState.currentAnimation];
+        if (!frames || frames.length === 0) return;
+        
+        
+        
+        AnimationState.frameTimer += deltaTime;
+        
+        if (AnimationState.frameTimer >= AnimationState.frameDuration){
+            AnimationState.frameTimer -= AnimationState.frameDuration;
+            AnimationState.currentFrameIndex++;
+            
+            if(AnimationState.currentFrameIndex >= frames.length){
+                AnimationState.currentFrameIndex = 0;
+            }
+            ApplyCurrentFrame(character)
+        }
+    } 
+    
+    function ApplyCurrentFrame(element){
+        const frameData = GetCurrentFrame();
+        if(!frameData) return;
+        
+        const frameIndex= frameData.frame;
+        const offsetX = -frameIndex * 16;
+        
+        // SET ACTUAL FRAME HERE
+        element.style.backgroundPosition = `${offsetX}px, 0`
+        
+        const size = element.style.scale
+        console.log(size)
+        if (frameData.flipped){
+            element.style.scale = "-2 2";
+            //element.transform = "scaleX(-1)"
+        }
+        else{
+            element.style.scale = "2 2";
+            //element.transform = "scaleX(1)"
+        }
+    }
+    
+    
+    function GetCurrentFrame(){
+        if (!AnimationState.currentAnimation) return null;
+        
+        const frames = AnimationList[AnimationState.currentAnimation];
+        return frames[AnimationState.currentFrameIndex];
+        
     }
     
     function gameLoop(){
+        //set delta time
+        const now = performance.now()
+        const deltaTime = now - lastTime;
+        lastTime = now;
+        
+        UpdateAnimation(deltaTime)
+        
         updatePosition()
         render()
         requestAnimationFrame(gameLoop)
     }
+    PlayAnimation("moveDown")
     handleInput();
     gameLoop();
     
