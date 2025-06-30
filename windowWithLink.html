@@ -1,0 +1,459 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> Judosii's website</title>
+    
+    <style>
+    .button {
+        border: none;
+        color: white;
+        padding: 32px 48px;
+        text-align: center;
+        text-decoration: indigo;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        transition-duration: 0.4s;
+        cursor: pointer;
+        
+    }
+    .button1 {
+        background-color: #04AA6D;
+        color: black;
+        border: 2px solid black;
+    }
+    .button1:hover {
+        background-color: rgba(4, 170, 109, 0.5);
+        color: black;
+        scale: 101%;
+    }
+    
+    
+    body{
+        margin: 0;
+        overflow: hidden;
+        background-color: #eef;
+    }
+    
+    #zeldaGameArea{
+        
+    }
+    
+    #playerCharacter{
+        width: 16px;
+        height: 16px;
+        scale: 2;
+        transform: scaleX(-1);
+        image-rendering: pixelated;
+        background-image: url('img/testSpriteSheet.png');
+        background-repeat: no-repeat;
+        background-position:  0;
+        background-position-x: -0px;
+        position: absolute;
+        top:100px;
+        left:150px;
+    }
+    
+    .window{
+        position: absolute;
+        width: 300px;
+        height: 200px;
+        border: 1px solid #999;
+        background-color: #b9b9b9;
+        box-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+    }
+
+    .window-title-bar{
+        background-color: #555;
+        position: relative;
+        top: -31px;
+        color: white;
+        padding: 5px;
+        cursor: move;
+        user-select: none;
+        border: 1px solid black;
+        transition-duration: 0.4s;
+        
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        flex: 0 0 auto;
+    }
+    .window-title-bar:hover{
+        scale: 100.1%;
+        background-color: #999;
+    }
+
+    .content {
+        padding: 10px;
+    }
+    
+    .window-bottom-rounded{
+        background-color: #555;
+        position: relative;
+        top: 170px;
+        color: white;
+        padding: 5px;
+        user-select: none;
+        border: 1px solid black;
+        transition-duration: 0.4s;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+        flex: 0 0 auto;
+    }
+    
+    .page-tab{
+        background-color: #555;
+        color: white;
+        padding: 5px;
+        user-select: none;
+        border: 1px solid black;
+        transition-duration: 0.4s;
+    }
+    .page-tab:hover{
+        scale: 100.1%;
+        background-color: #999;
+    }
+    
+    </style>
+    
+    
+</head>
+<body>
+    <!-- Comments here can be made like this -->
+    
+    <div class="page-tab">  this is a tab </div>
+    
+    <h1> hitting the naenae </h1>
+    <p> button test: </p>
+    <button class = "button button1" onclick = "startLink()"> activate Link </button>
+    
+    <!-- Comments here can be made like this -->
+    <div id="output">  </div>
+    
+    <div class = "window" id = "ZeldaWindow" style="top: 100px; left: 150px" >
+        <div class="window-title-bar">
+            <span class = "title-text">Link's Awakening.rom</span>
+            <div>
+                <button class="button1" style="">X</button>
+            </div>
+        </div>
+        <div id="zeldaGameArea">
+            <div id="playerCharacter"> </div>
+        </div>
+        <div class="window-bottom-rounded"></div>
+    </div>
+<script>
+    
+    function startLink(){
+        ActivatePlayer();
+    }
+    
+    // ##### USEFUL STUFF #####
+    
+    // reminder for later this is how you print:
+    // console.log()
+    
+    // ### MATH ###
+    // These functions should always return something and never save something ig
+    function NormalizeVector2(vecX, vecY) {
+        let length = Math.sqrt(vecX ** 2 + vecY ** 2);
+        if (length === 0) return { x: 0, y: 0 };  // Optional: Handle zero vector case
+
+        return {
+            x: vecX / length,
+            y: vecY / length
+        };
+    }
+    
+    //tells you if an entity is outside a given window
+    function DetectIfOutsideOfWindow(entity, wind){
+
+        const entityRect = entity.getBoundingClientRect()
+        const windowRect = wind.getBoundingClientRect()
+
+        const outLeft = entityRect.left < windowRect.left ;
+        const outRight = entityRect.right > windowRect.right;
+        const outTop = entityRect.top < windowRect.top;
+        const outDown = entityRect.bottom > windowRect.bottom;
+
+        return outLeft || outRight || outTop || outDown
+    }
+    
+    // ### Animation stuff ###
+    function PlayAnimation(animationName){
+        if (animationName === PlayerAnimationState.currentAnimation){ return }
+        
+        if (PlayerAnimationList[animationName]){
+            PlayerAnimationState.currentAnimation = animationName;
+            PlayerAnimationState.currentFrameIndex = 0;
+            PlayerAnimationState.frameTimer = 0;
+            ApplyCurrentFrame(character)
+        }
+        else{
+            console.warn(`Animation '${animationName}' does not exist in AnimationList.`);
+        }
+    }
+    function UpdateAnimation(deltaTime){ //ms since last frame
+        if (!PlayerAnimationState.currentAnimation) return;
+
+        const frames = PlayerAnimationList[PlayerAnimationState.currentAnimation];
+        if (!frames || frames.length === 0) return;
+
+
+
+        PlayerAnimationState.frameTimer += deltaTime;
+
+        if (PlayerAnimationState.frameTimer >= PlayerAnimationState.frameDuration){
+            PlayerAnimationState.frameTimer -= PlayerAnimationState.frameDuration;
+            PlayerAnimationState.currentFrameIndex++;
+
+            if(PlayerAnimationState.currentFrameIndex >= frames.length){
+                PlayerAnimationState.currentFrameIndex = 0;
+            }
+            ApplyCurrentFrame(character)
+        }
+    }
+    function ApplyCurrentFrame(element){
+        const frameData = GetCurrentFrame();
+        if(!frameData) return;
+
+        const frameIndex= frameData.frame;
+        const offsetX = -frameIndex * 16;
+
+        // SET ACTUAL FRAME HERE
+        element.style.backgroundPosition = `${offsetX}px, 0`
+
+        //Get the size of the sprite with scale * Math.sign(scale)
+        // -1 * -1, is 1 ; else 1*1 is 1
+        const size = element.style.scale
+        
+        if (frameData.flipped){
+            element.style.scale = "-2 2";
+        }
+        else{
+            element.style.scale = "2 2";
+        }
+    }
+    function GetCurrentFrame(){
+        if (!PlayerAnimationState.currentAnimation) return null;
+
+        const frames = PlayerAnimationList[PlayerAnimationState.currentAnimation];
+        return frames[PlayerAnimationState.currentFrameIndex];
+
+    }
+    
+    // ##### END OF USEFUL STUFF #####
+    
+    
+    
+    // ++ ALL PLAYER CHARACTER STUFF ++
+    const character = document.getElementById('playerCharacter');
+    let posX = 150;
+    let posY = 100;
+    
+    const speed = 3; // pixels per frame
+    
+    let lastTime = performance.now() //used for delta time
+    
+    let isMoving = false;
+    
+    const KeyPressed = {
+        ArrowLeft:false,
+        ArrowRight: false,
+        ArrowUp: false,
+        ArrowDown: false
+    };
+    
+    const PlayerAnimationList = {
+        "idleDown" : [
+            {frame:0,flipped: false}
+        ],
+        "idleUp": [
+            {frame:1,flipped: false}
+        ],
+        "idleLeft": [
+            {frame:2,flipped: true}
+        ],
+        "idleRight": [
+            {frame:2,flipped: false}
+        ],
+        "moveDown": [
+            {frame:0,flipped: false},
+            {frame:0,flipped: true}
+        ],
+        "moveUp": [
+            {frame:1,flipped: false},
+            {frame:1,flipped: true}],
+        "moveLeft": [
+            {frame:2,flipped: true},
+            {frame:3, flipped: true}
+        ],
+        "moveRight": [
+            {frame:2,flipped: false},
+            {frame:3, flipped: false}
+        ]
+    };
+    
+    const PlayerAnimationState = {
+        currentAnimation: PlayerAnimationList.moveDown,
+        currentFrameIndex: 0,
+        frameTimer: 0,
+        frameDuration: 500 //ms per frame
+    }
+    
+    function ActivatePlayer(){
+        curState = PlayerStates[1];
+    }
+    
+    const PlayerStates = [
+        "Inactive",
+        "Idle",
+        "Moving",
+        "AreaTransition"
+    ]
+    let curState = PlayerStates[0];
+    
+    function PlayerStateLogic(_delta){
+        switch (curState){
+            case PlayerStates[0]: // Inactive state (get activated somehow), get set to Idle Later
+                break;
+            case PlayerStates[1]: // Idle State
+                IdleState(_delta)
+                break;
+            case PlayerStates[2]: // Moving State
+                MovingState(_delta)
+                break;
+            case PlayerStates[3]: // Area Transition
+                AreaTransitionState(_delta)
+                break;
+
+        }
+    }
+    
+    //Will be useful but has to be set to what dir the player is looking
+    const CharacterDirs = [
+        "up",
+        "down",
+        "left",
+        "right"
+    ]
+    
+    function _HandleInput(){
+        document.addEventListener('keydown',(e)=> {
+            if(e.key in KeyPressed){
+                KeyPressed[e.key] = true;
+            }
+        });
+
+        document.addEventListener('keyup', (e)=> {
+            if(e.key in KeyPressed){
+                KeyPressed[e.key] = false
+            }
+        });
+    }
+    function UpdatePosition(){
+        let vecDir = {"x":0,"y":0}
+        
+        isMoving = false;
+        
+        // know what direction to go to
+        if (KeyPressed.ArrowLeft){
+            vecDir.x-=1;
+            isMoving = true;
+            PlayAnimation("moveLeft")
+        }
+        if (KeyPressed.ArrowRight){
+            vecDir.x +=1;
+            isMoving = true;
+            PlayAnimation("moveRight")
+        }
+        if (KeyPressed.ArrowUp){
+            vecDir.y -=1;
+            isMoving = true;
+            PlayAnimation("moveUp")
+        }
+        if (KeyPressed.ArrowDown){
+            vecDir.y +=1;
+            isMoving = true;
+            PlayAnimation("moveDown")
+        }
+        vecDir = NormalizeVector2(vecDir.x,vecDir.y)
+        
+        posX += vecDir.x* speed;
+        posY += vecDir.y* speed;
+
+        let win = document.getElementById("ZeldaWindow")
+        if (DetectIfOutsideOfWindow(character,win)){
+            
+        }
+    }
+
+    function RenderPosition(){
+        character.style.left = posX+'px';
+        character.style.top = posY+'px';
+    }
+    
+    function gameLoop(){
+        //set delta time
+        const now = performance.now()
+        const deltaTime = now - lastTime;
+        lastTime = now;
+
+        PlayerStateLogic(deltaTime)
+        requestAnimationFrame(gameLoop)
+    }
+    _HandleInput();
+    gameLoop();
+    
+    function IdleState(_d){
+
+        UpdateAnimation(_d)
+
+        UpdatePosition()
+        RenderPosition()
+    }
+
+    function MovingState(_d){
+    }
+    function AreaTransitionState(_d){
+    }
+    
+    function TemplateState(_d){
+    }
+    
+    // ++ END OF CHARACTER STUFF ++
+    
+    // ++ DRAGGABLE WINDOW STUFF ++
+    function makeDraggable(el) {
+        const titleBar = el.querySelector('.window-title-bar');
+        let offsetX = 0, offsetY = 0, isDragging = false;
+
+        titleBar.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            offsetX = e.clientX - el.offsetLeft;
+            offsetY = e.clientY - el.offsetTop;
+            document.body.style.userSelect = 'none';
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (isDragging) {
+                el.style.left = (e.clientX - offsetX) + 'px';
+                el.style.top = (e.clientY - offsetY) + 'px';
+            }
+        });
+
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+            document.body.style.userSelect = '';
+        });
+    }
+
+    makeDraggable(document.getElementById('ZeldaWindow'))
+    
+    // END OF DRAGGABLE WINDOW STUFF
+    
+</script>
+
+</body>
+</html>
