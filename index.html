@@ -69,6 +69,24 @@
         grid-template-columns: 17.5vw 1fr;
         height: 10vh;
     }
+    .earthbound-Background{
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 200%;
+        width: 200%;
+        background-image: url("img/ebtest.png");
+        background-repeat: repeat;
+        animation: scroll 30s linear infinite;
+    }
+    @keyframes scroll {
+        0%{
+            background-position: 0 0;
+        }
+        100%{
+            background-position: 1000px 1000px;
+        }
+    }
     
     .grid-container{
         display: grid;
@@ -96,6 +114,7 @@
 </head>
 <body>
     <!-- Comments here can be made like this -->
+    <div class="earthbound-Background"></div>
     <div class="container main-container">
         <div class="container">
             <div class="menu-layout" style="gap: 0">
@@ -128,16 +147,24 @@
         //Hide all tabs
     }
     function ProjectsTabPressed(){
-        //make tab be on top
-        //if tab hasn't appeared yet, make it appear
+        if(projectTabStatus === tabState[1]){
+            //tab is already active...
+            //Make it be on top
+            //Recenter the tab?
+        }
+        
+        ShowTab("pro")
     }
     function WipTabPressed(){
+        ShowTab("wip")
         
     }
     function ContactTabPressed(){
+        ShowTab("con")
 
     }
     function SpecialTabPressed(){
+        ShowTab("spe")
 
     }
     
@@ -146,6 +173,7 @@
             console.error("dumbass")
         }
         lastTab = tab;
+        //Do the animation thing
     }
     function HideTab(){
         
