@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title> Judosii's website</title>
     
-    
     <style>
     .button {
         border: none;
@@ -69,16 +68,18 @@
         grid-template-columns: 17.5vw 1fr;
         height: 10vh;
     }
+    
     .earthbound-Background{
         position: fixed;
         top: 0;
         left: 0;
-        height: 200%;
-        width: 200%;
-        background-image: url("img/ebtest.png");
+        height: 100%;
+        width: 100%;
+        background-image: url("js/ebtest.png");
         background-repeat: repeat;
         animation: scroll 30s linear infinite;
     }
+    
     @keyframes scroll {
         0%{
             background-position: 0 0;
@@ -109,12 +110,17 @@
         position:relative;
     }
     </style>
-    
-    
+    <link rel="stylesheet" href="css/main-style.css">
 </head>
+
+
 <body>
     <!-- Comments here can be made like this -->
-    <div class="earthbound-Background"></div>
+
+    
+    <canvas id="canvas1"></canvas>
+    <script src ="js/earthboundBackground.js"></script>
+    
     <div class="container main-container">
         <div class="container">
             <div class="menu-layout" style="gap: 0">
@@ -132,6 +138,8 @@
     <div class="page-bottom"></div>
     <!-- Comments here can be made like this -->
 <script>
+    
+    
     
     let lastTab = ""
     let tabState = [
@@ -156,16 +164,30 @@
         ShowTab("pro")
     }
     function WipTabPressed(){
+        if(wipTabStatus === tabState[1]){
+            //tab is already active...
+            //Make it be on top
+            //Recenter the tab?
+        }
         ShowTab("wip")
         
     }
     function ContactTabPressed(){
+        if(contactTabStatus === tabState[1]){
+            //tab is already active...
+            //Make it be on top
+            //Recenter the tab?
+        }
         ShowTab("con")
 
     }
     function SpecialTabPressed(){
+        if(specialTabStatus === tabState[1]){
+            //tab is already active...
+            //Make it be on top
+            //Recenter the tab?
+        }
         ShowTab("spe")
-
     }
     
     function ShowTab(tab){

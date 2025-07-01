@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>EarthBound Style Background</title>
+    <style>
+        body { margin: 0; overflow: hidden; background: black; }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+<canvas id="bg"></canvas>
+
+<script>
+    const canvas = document.getElementById('bg');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const img = new Image();
+    img.src = 'img/ebtest.png';  // Use a seamless tileable image
+
+    let scrollX = 0;
+    let scrollY = 0;
+    let time = 0;
+
+    img.onload = () => {
+        requestAnimationFrame(draw);
+    };
+
+    function draw() {
+        time += 0.016;  // Approx 60fps step
+
+        scrollX += 0.5;  // Horizontal scroll speed
+        scrollY += 0.2;  // Vertical scroll speed
+
+        const imgWidth = img.width;
+        const imgHeight = img.height;
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        for (let y = 0; y < canvas.height; y++) {
+            // Sine wave offset for this line
+            const wave = Math.sin((y / 20) + time * 2) * 10;  // Tune frequency & amplitude
+
+            for (let x = 0; x < canvas.width; x += imgWidth) {
+                // Draw each line with horizontal wave distortion
+                ctx.drawImage(
+                    img,
+                    (-(scrollX + wave) + x) % imgWidth,
+                    (-(scrollY) + y) % imgHeight,
+                    imgWidth,
+                    1,   // Draw 1px tall strip
+                    x,
+                    y,
+                    imgWidth,
+                    1
+                );
+            }
+        }
+
+        requestAnimationFrame(draw);
+    }
+
+    // Resize handling
+    window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    });
+</script>
+</body>
+</html>
