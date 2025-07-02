@@ -6,7 +6,7 @@ const ctx = canvas.getContext('2d');
 ctx.imageSmoothingEnabled=false;
 
 let img = new Image();
-img.src = 'js/ebtest.png';
+img.src = 'img/ebBackgrounds/302.png';
 
 //set canvas to window size on startup
 canvas.width = window.innerWidth;
@@ -14,8 +14,11 @@ canvas.height = window.innerHeight;
 
 let pattern;
 
-let scrollSpeedX = 0.5; // +right -left
-let scrollSpeedY= 0.5; // +down -up
+let scrollSpeed = 1;
+let scrollDir = {
+    "x": 1, // +right -left
+    "y": 1 // +down -up
+}
 let offsetX = 0;
 let offsetY = 0;
 
@@ -36,8 +39,8 @@ function ResizeCanvas(){
 
 function Drawbackground(){
     if(pattern){
-        offsetX += scrollSpeedX;
-        offsetY += scrollSpeedY;
+        offsetX += scrollDir.x * scrollSpeed;
+        offsetY += scrollDir.y * scrollSpeed;
         
         offsetX %= img.width;
         offsetY %= img.height;
@@ -55,4 +58,3 @@ function Drawbackground(){
     requestAnimationFrame(Drawbackground)
     console.log(offsetX)
 }
-
