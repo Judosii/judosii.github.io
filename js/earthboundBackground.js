@@ -6,7 +6,7 @@ const ctx = canvas.getContext('2d');
 ctx.imageSmoothingEnabled=false;
 
 let img = new Image();
-img.src = 'img/ebBackgrounds/297.png';
+img.src = 'img/ebBackgrounds/ebtest.png';
 
 //set canvas to window size on startup
 canvas.width = window.innerWidth;
