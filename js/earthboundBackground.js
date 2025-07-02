@@ -6,7 +6,7 @@ const ctx = canvas.getContext('2d');
 ctx.imageSmoothingEnabled=false;
 
 let img = new Image();
-img.src = 'img/ebBackgrounds/302.png';
+img.src = 'img/ebBackgrounds/297.png';
 
 //set canvas to window size on startup
 canvas.width = window.innerWidth;
@@ -14,7 +14,7 @@ canvas.height = window.innerHeight;
 
 let pattern;
 
-let scrollSpeed = 1;
+let scrollSpeed = 0.7;
 let scrollDir = {
     "x": 1, // +right -left
     "y": 1 // +down -up
@@ -56,5 +56,4 @@ function Drawbackground(){
         ctx.fillRect(-img.width,-img.height, totalWidth, totalHeight)
     }
     requestAnimationFrame(Drawbackground)
-    console.log(offsetX)
 }
