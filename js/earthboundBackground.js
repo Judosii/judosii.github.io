@@ -6,7 +6,7 @@ const ctx = canvas.getContext('2d');
 ctx.imageSmoothingEnabled=false;
 
 let img = new Image();
-img.src = 'img/ebBackgrounds/ebtest.png';
+img.src = 'img/EbBackgrounds/297.png';
 
 //set canvas to window size on startup
 canvas.width = window.innerWidth;
@@ -56,4 +56,6 @@ function Drawbackground(){
         ctx.fillRect(-img.width,-img.height, totalWidth, totalHeight)
     }
     requestAnimationFrame(Drawbackground)
+
+    
 }

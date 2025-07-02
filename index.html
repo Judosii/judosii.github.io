@@ -109,7 +109,14 @@
 
     
     <canvas id="canvas1"></canvas>
-    <script src ="js/earthboundBackground.js"></script>
+    <script src ="js/earthboundBackground.js" id="canvas1Script">
+        
+        function ChangeImage(newImage){
+            img = newImage;
+        }
+        window.ChangeImage = ChangeImage;
+        
+    </script>
     
     <div class="container main-container">
         <div class="container">
@@ -142,19 +149,51 @@
     let specialTabStatus = tabState[0]
     
     function MainTabPressed(){
+        let img = new Image();
+        img.src = 'img/EbBackgrounds/302.png';
+        if (typeof window.ChangeImage === "function"){
+            window.ChangeImage(img)
+        }
+        else {
+            console.log(typeof window.ChangeImage)
+        }
+        //ChangeImage(img);
+        
         //Hide all tabs
     }
+    
     function ProjectsTabPressed(){
-        if(projectTabStatus === tabState[1]){
+        let img = new Image();
+        img.src = 'img/EbBackgrounds/ebtest.png';
+        if (typeof window.ChangeImage === "function"){
+            window.ChangeImage(img)
+        }
+        else {
+            console.log(typeof window.ChangeImage)
+        }
+        //ChangeImage(img);
+        
+        if(projectTabStatus === tabState[1]) 
+        {
             //tab is already active...
             //Make it be on top
             //Recenter the tab?
         }
-        
         ShowTab("pro")
     }
     function WipTabPressed(){
-        if(wipTabStatus === tabState[1]){
+        let img = new Image();
+        img.src = 'img/EbBackgrounds/297.png';
+        if (typeof window.ChangeImage === "function"){
+            window.ChangeImage(img)
+        }
+        else {
+            console.log(typeof window.ChangeImage)
+        }
+        //ChangeImage(img);
+        
+        if(wipTabStatus === tabState[1])
+        {
             //tab is already active...
             //Make it be on top
             //Recenter the tab?
