@@ -50,11 +50,11 @@
         background-color: #afc6da;
     }
     .container{
-        background-color: indigo;
+        background-color: #363636;
         position:relative;
-        margin: auto;
+        margin: auto;   
         padding: 10px;
-        border: 3px solid crimson;
+        border: 3px solid whitesmoke;
         border-radius: 5px;
     }
     .main-container{
@@ -67,16 +67,6 @@
         display: grid;
         grid-template-columns: 17.5vw 1fr;
         height: 10vh;
-    }
-         
-    
-    @keyframes scroll {
-        0%{
-            background-position: 0 0;
-        }
-        100%{
-            background-position: 1000px 1000px;
-        }
     }
     
     .grid-container{
@@ -121,15 +111,15 @@
     <div class="container main-container">
         <div class="container">
             <div class="menu-layout" style="gap: 0">
-                <div class="button button-main" onclick="MainTabPressed()"> MAIN </div>
-                <div class = "grid-container side-buttons">
-                    <div class="button button-side" onclick="ProjectsTabPressed()"> Projets </div>
-                    <div class="button button-side" onclick="WipTabPressed()"> WIP </div>
-                    <div class="button button-side" onclick="ContactTabPressed()"> Contact </div>
-                    <div class="button button-side" onclick="SpecialTabPressed()"> Spécial? </div>
+                <div class="button button-main" onclick="MainTabPressed()"> MAIN</div>
+                <div class="grid-container side-buttons">
+                    <div class="button button-side" onclick="ProjectsTabPressed()"> Projets</div>
+                    <div class="button button-side" onclick="WipTabPressed()"> WIP</div>
+                    <div class="button button-side" onclick="ContactTabPressed()"> Contact</div>
+                    <div class="button button-side" onclick="SpecialTabPressed()"> Spécial?</div>
                 </div>
             </div>
-            
+
         </div>
     </div>
     <div class="page-bottom"></div>
