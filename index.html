@@ -80,6 +80,7 @@
         padding-bottom: 10px;
     }
     
+    
     body{
         margin: 0;
         overflow: hidden;
@@ -99,28 +100,23 @@
 
     
     <canvas id="canvas1"></canvas>
-    <script src ="js/earthboundBackground.js" id="canvas1Script">
-        
-        function ChangeImage(newImage){
-            img = newImage;
-        }
-        window.ChangeImage = ChangeImage;
-        
-    </script>
+    <script src ="js/earthboundBackground.js" id="canvas1Script"></script>
+
+    <div class="container">
+        <div class="menu-layout" style="gap: 0">
+            <div class="button button-main" onclick="MainTabPressed()"> MAIN</div>
+            <div class="grid-container side-buttons">
+                <div class="button button-side" onclick="ProjectsTabPressed()"> Projects</div>
+                <div class="button button-side" onclick="WipTabPressed()"> WIP</div>
+                <div class="button button-side" onclick="ContactTabPressed()"> Contact</div>
+                <div class="button button-side" onclick="SpecialTabPressed()"> Spécial?</div>
+            </div>
+        </div>
+    </div>
     
     <div class="container main-container">
-        <div class="container">
-            <div class="menu-layout" style="gap: 0">
-                <div class="button button-main" onclick="MainTabPressed()"> MAIN</div>
-                <div class="grid-container side-buttons">
-                    <div class="button button-side" onclick="ProjectsTabPressed()"> Projets</div>
-                    <div class="button button-side" onclick="WipTabPressed()"> WIP</div>
-                    <div class="button button-side" onclick="ContactTabPressed()"> Contact</div>
-                    <div class="button button-side" onclick="SpecialTabPressed()"> Spécial?</div>
-                </div>
-            </div>
-
-        </div>
+        <p style="color: #eeeeff; font-size: 32px"> Heyo, my name is Judosii!</p>
+        
     </div>
     <div class="page-bottom"></div>
     <!-- Comments here can be made like this -->
