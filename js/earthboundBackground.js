@@ -1,6 +1,6 @@
 // noinspection SpellCheckingInspection
 
-const canvas = document.getElementById('canvas1');
+const canvas = document.getElementById('animatedCanvasBackground');
 const ctx = canvas.getContext('2d');
 
 ctx.imageSmoothingEnabled=false;

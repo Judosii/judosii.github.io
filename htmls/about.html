@@ -36,34 +36,6 @@
             backdrop-filter: blur(10vh);
             justify-content: space-between;
         }
-        .website-top-bar-left{
-            float: left;
-            margin-bottom: 1%;
-            margin-top: 2%;
-        }
-        .website-top-bar-right{
-            display: inline-block;
-            float: right;
-            margin-bottom: 1%;
-            margin-top: 2%;
-        }
-
-
-        .menu-layout{
-            display: grid;
-            grid-template-columns: 17.5vw 1fr;
-            height: 10vh;
-        }
-
-        .grid-container{
-            display: table-row;
-            grid-gap: 10px;
-
-            flex-grow: 1;
-            padding-left: 10px;
-            padding-right: 10px;
-            padding-bottom: 10px;
-        }
 
         .button {
             border: none;
@@ -105,14 +77,14 @@
 
     </style>
     <link rel="stylesheet" href="../css/main-style.css">
-    <script src="../js/earthboundBackground.js" id="canvas1Script"></script>
 </head>
 
 
 <body>
 <!-- Comments here can be made like this -->
 
-<canvas id="canvas1"></canvas>
+<canvas id="animatedCanvasBackground"></canvas>
+<script src="../js/earthboundBackground.js" id="animatedCanvasBackgroundScript"></script>
 
 <!-- Header of the page! links to other pages mostly. -->
 <header id="PageHeader">
@@ -142,24 +114,6 @@
 
 
 <script>
-    const mainContainer = document.getElementById("IDMainContainer")
-    function OnMainClick() {
-
-    }
-    function OnPortfolioClick() {
-        mainContainer.innerText ="bbb"
-    }
-    function OnProjectsClick() {
-        mainContainer.innerText ="ccc"
-    }
-    function OnAboutClick() {
-        mainContainer.innerText ="ddd"
-    }
-
-
-    function DoALerp(element, curPos, finalPos)  {
-
-    }
 
 </script>
 
