@@ -106,7 +106,7 @@
             fetch("htmls/" + wantedFile)
                 .then(res => res.json)
                 .then(data => {newChild = data;})
-                .then(() => {console.log(newChild   )})
+                .then(res => console.log(res))
             
         }
         
