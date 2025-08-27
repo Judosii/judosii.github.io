@@ -74,30 +74,40 @@
     
     
 <script>
-    const mainContainer = document.getElementById("IdMainContainer")
-    const hideDiv = document.getElementById("IdHideHere")
+    const mainContainer = document.getElementById("IdMainContainer");
+    const hideDiv = document.getElementById("IdHideHere");
 
     function SwitchChild(newChildIdString){
         let curChild = mainContainer.firstElementChild
-        console.log("-- desired child is: ",curChild.id," --")
+        console.log("-- desired child is: ",curChild.id," --");
         
         if (curChild.id === newChildIdString ){
-            console.log("current child is the desired child")
+            console.log("current child is the desired child");
             return;
         }
-        console.log("hiding ", curChild.id, "...")
-        hideDiv.appendChild(curChild)
+        console.log("hiding ", curChild.id, "...");
+        hideDiv.appendChild(curChild);
 
         // to make the next child, check if it doesn't already exist
         let newChild
         if(document.getElementById(newChildIdString) !== null){
-            newChild = document.getElementById(newChildIdString)
-            newChild.hidden = false
+            newChild = document.getElementById(newChildIdString);
+            newChild.hidden = false;
         }
         else {
-            newChild = document.createElement("div")
-            newChild.id = newChildIdString
-            newChild.innerHTML = newChildIdString
+            newChild = document.createElement("div");
+            
+            newChild.id = newChildIdString;
+
+            let wantedFile = newChildIdString.replace(/^Id_/,'').replace(/Child$/,'') + ".html";
+            
+            console.log("seeking file "+ wantedFile + " in directory htmls")
+            
+            fetch("htmls/" + wantedFile)
+                .then(res => res.json)
+                .then(data => {newChild = data;})
+                .then(() => {console.log(newChild   )})
+            
         }
         
         mainContainer.appendChild(newChild)
