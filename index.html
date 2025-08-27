@@ -47,22 +47,23 @@
                 <a class="button button-main" style=" color: #eeeeff" onclick="SwitchChild('Id_MainChild')"> MAIN  </a>
             </div>
             <div style="float: right; padding-right: 50px">
-                <a class="button button-side" style=" color: #eeeeff;" onclick="SwitchChild('Id_PortfolioChild')" > •Portfolio </a>
-                <a class="button button-side" style=" color: #eeeeff;" onclick="SwitchChild('Id_ProjectsChild')"> •Projects </a>
                 <a class="button button-side" style=" color: #eeeeff;" onclick="SwitchChild('Id_AboutMeChild')"> •About me </a>
+                <a class="button button-side" style=" color: #eeeeff;" onclick="SwitchChild('Id_ProjectsChild')"> •Projects </a>
+                <a class="button button-side" style=" color: #eeeeff;" onclick="SwitchChild('Id_PortfolioChild')" > •Portfolio </a>
             </div>
         </nav>
     </header>
     
     
     <main>
-        <div class="container main-container" id="IDMainContainer" >
+        <div class="container main-container" id="IdMainContainer" >
             <div class="container mainChild" id="Id_MainChild" >
                 <p style="color: #eeeeff; font-size: 32px"> Hello, i'm Judosii!</p>
                 <p style="color: #eeeeff; font-size: 32px"> This website is subject to change, and is for personal use only.</p>
                 <p style="color: #eeeeff; font-size: 32px"> I may use it to show my projects and portfolio, so be aware of that.</p>
             </div>
         </div>
+        <div id="IdHideHere" hidden="hidden"></div>
         
     </main>
     
@@ -73,29 +74,32 @@
     
     
 <script>
-    const mainContainer = document.getElementById("IDMainContainer")
+    const mainContainer = document.getElementById("IdMainContainer")
+    const hideDiv = document.getElementById("IdHideHere")
 
     function SwitchChild(newChildIdString){
         let curChild = mainContainer.firstElementChild
-        console.log(curChild.id)
+        console.log("-- desired child is: ",curChild.id," --")
         
         if (curChild.id === newChildIdString ){
             console.log("current child is the desired child")
             return;
         }
-        console.log("throw that child out of the window")
-        curChild.hidden = true
+        console.log("hiding ", curChild.id, "...")
+        hideDiv.appendChild(curChild)
 
         // to make the next child, check if it doesn't already exist
         let newChild
         if(document.getElementById(newChildIdString) !== null){
-            console.log("did ")
             newChild = document.getElementById(newChildIdString)
+            newChild.hidden = false
         }
         else {
             newChild = document.createElement("div")
+            newChild.id = newChildIdString
             newChild.innerHTML = newChildIdString
         }
+        
         mainContainer.appendChild(newChild)
         
     }
