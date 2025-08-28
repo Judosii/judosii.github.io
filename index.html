@@ -8,15 +8,16 @@
      /* Head comments are done like this */
      /*  */
     .container{
-        background-color: #363636;
+        background-color: transparent;
         position:relative;
         margin: auto;
         padding: 10px;
     }
      /* for now where I'm putting info */
     .main-container{
-        background-color: #363636;
-        height: 90vh;
+        
+        background-color: #000000;
+        height: 180vh;
         width: 50%;
     }
     
@@ -25,8 +26,6 @@
         overflow: hidden;
         background-color: #eef;
     }
-
-     /* Button Shenanigans */
      
      
     </style>
@@ -56,7 +55,7 @@
     
     
     <main>
-        <div class="container main-container" id="IdMainContainer" >
+        <div class="container main-container" id="IdMainContainer" style="border: double 10px #eeeeff" >
             <div class="container mainChild" id="Id_MainChild" >
                 <p style="color: #eeeeff; font-size: 32px"> Hello, i'm Judosii!</p>
                 <p style="color: #eeeeff; font-size: 32px"> This website is subject to change, and is for personal use only.</p>
@@ -106,6 +105,7 @@
             }
             
         mainContainer.appendChild(newChild)
+        ResizeMainContainer()
     }
 
 
@@ -120,6 +120,11 @@
                 targetEl.innerHTML = htmlSnippet
             })
         
+    }
+    
+    function ResizeMainContainer(){
+        console.log("resizing...")
+        //mainContainer.height = mainContainer.firstElementChild.clientHeight
     }
         
     
