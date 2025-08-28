@@ -44,12 +44,12 @@
     <header id="PageHeader" >
         <nav class="container website-top-bar" role="navigation" style="float: inherit; box-shadow: 5px 20px, red">
             <div style="float: left; padding-left: 50px">
-                <a class="button button-main" style=" color: #eeeeff" onclick="SwitchChild('Id_MainChild')"> MAIN  </a>
+                <a class="button button-main" style=" color: #eeeeff" onclick="SwitchChild('Id_mainChild')"> MAIN  </a>
             </div>
             <div style="float: right; padding-right: 50px">
-                <a class="button button-side" style=" color: #eeeeff;" onclick="SwitchChild('Id_AboutMeChild')"> •About me </a>
-                <a class="button button-side" style=" color: #eeeeff;" onclick="SwitchChild('Id_ProjectsChild')"> •Projects </a>
-                <a class="button button-side" style=" color: #eeeeff;" onclick="SwitchChild('Id_PortfolioChild')" > •Portfolio </a>
+                <a class="button button-side" style=" color: #eeeeff;" onclick="SwitchChild('Id_aboutMeChild')"> •About me </a>
+                <a class="button button-side" style=" color: #eeeeff;" onclick="SwitchChild('Id_projectsChild')"> •Projects </a>
+                <a class="button button-side" style=" color: #eeeeff;" onclick="SwitchChild('Id_portfolioChild')" > •Portfolio </a>
             </div>
         </nav>
     </header>
@@ -57,7 +57,7 @@
     
     <main>
         <div class="container main-container" id="IdMainContainer" >
-            <div class="container mainChild" id="Id_MainChild" >
+            <div class="container mainChild" id="Id_mainChild" >
                 <p style="color: #eeeeff; font-size: 32px"> Hello, i'm Judosii!</p>
                 <p style="color: #eeeeff; font-size: 32px"> This website is subject to change, and is for personal use only.</p>
                 <p style="color: #eeeeff; font-size: 32px"> I may use it to show my projects and portfolio, so be aware of that.</p>
@@ -70,9 +70,7 @@
     <footer id="PageFooter" ></footer>
     
     
-    <!-- Comments here can be made like this -->
-    
-    
+    <!-- Script starts here -->
 <script>
     const mainContainer = document.getElementById("IdMainContainer");
     const hideDiv = document.getElementById("IdHideHere");
@@ -96,24 +94,32 @@
         }
         else {
             newChild = document.createElement("div");
-            
             newChild.id = newChildIdString;
 
-            let wantedFile = newChildIdString.replace(/^Id_/,'').replace(/Child$/,'') + ".html";
-            
+            let wantedFile = newChildIdString.replace(/^Id_/,'').replace(/Child$/,'' + ".html") ;
             console.log("seeking file "+ wantedFile + " in directory htmls")
             
-            fetch("htmls/" + wantedFile)
-                .then(res => res.json)
-                .then(data => {newChild = data;})
-                .then(res => console.log(res))
+            FetchHtmlFile(wantedFile, newChild)
             
-        }
-        
+            //FetchHtmlFile(wantedFile, newChild)
+            
         mainContainer.appendChild(newChild)
-        
     }
-    
+
+
+    async function FetchHtmlFile(wantedFileString, targetEl){
+        fetch("htmls/"+ wantedFileString)
+            .then(res => {
+                if(res.ok){
+                    return res.text()
+                }
+            })
+            .then(htmlSnippet => {
+                targetEl.innerHTML = htmlSnippet
+            })
+        }
+    }
+        
     
 </script>
 
