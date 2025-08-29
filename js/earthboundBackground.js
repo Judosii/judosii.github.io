@@ -6,7 +6,7 @@ const ctx = canvas.getContext('2d');
 ctx.imageSmoothingEnabled=false;
 
 let img = new Image();
-img.src = 'img/EbBackgrounds/297.png';
+img.src = 'img/EbBackgrounds/ebtest.png';
 
 //set canvas to window size on startup
 canvas.width = window.innerWidth;
@@ -63,6 +63,18 @@ function Drawbackground(){
         
         ctx.fillStyle = pattern;
         ctx.fillRect(-img.width,-img.height, totalWidth, totalHeight)
+        
     }
+    let InvertColours = ({data}) => {
+       console.log(data)
+       for (i=0; i < data.length; i += 4){
+           data[i] = 255 - data[i];
+           data[i+1] = 255 - data[i+1]
+           data[i+2] = 255 - data[i+2]
+           data[i+3] = 255
+       } 
+       return data
+    }
+    
     requestAnimationFrame(Drawbackground)
 }
