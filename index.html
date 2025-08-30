@@ -41,13 +41,13 @@
     <!-- Header of the page! links to other pages mostly. -->
     <header id="PageHeader" >
         <nav class="container website-top-bar" role="navigation" style="float: inherit;">
-            <div style="float: left; padding-left: 50px">
+            <div style="float: left; margin-left: 50px">
                 <a class="button button-main" style=" color: #eeeeff" onclick="SwitchChild('Id_MainChild')"> MAIN  </a>
             </div>
-            <div style="float: right; padding-right: 50px; align-items: center">
+            <div style="float: right; margin-right: 50px; align-items: center">
                 <a class="button button-side" style=" color: #eeeeff; vertical-align: auto" onclick="SwitchChild('Id_AboutMeChild')"> •About me </a>
                 
-                <a class="burgerHolder" onclick="BurgerTest(this)">
+                <a class="burgerHolder" onclick="BurgerClicked(this)" style="justify-self: center">
                     <div class = "burger-bar1"></div>
                     <div class = "burger-bar2"></div>
                     <div class = "burger-bar3"></div>
@@ -56,7 +56,7 @@
                     
                 </a>
 
-                <a class="burgerHolder" onclick="BurgerTest(this)">
+                <a class="burgerHolder" onclick="BurgerClicked(this)">
                     <div class = "burger-bar1"></div>
                     <div class = "burger-bar2"></div>
                     <div class = "burger-bar3"></div>
@@ -73,24 +73,38 @@
                 <p style="color: #eeeeff; font-size: 32px"> Hello, i'm Judosii!</p>
                 <p style="color: #eeeeff; font-size: 32px"> This website is subject to change, and is for personal use only.</p>
                 <p style="color: #eeeeff; font-size: 32px; margin-bottom: 64px"> I may use it to show my projects and portfolio, so be aware of that.</p>
+                <p style="color: #eeeeff; font-size: 32px; margin-bottom: 64px">Also, the buttons at the top don't quite show a lot yet lol.</p>
                 
                 
             </div>
         </div>
-        <div id="IdHideHere" hidden="hidden"></div>
-
-
+        <div id="IdHideHere" hidden="hidden">
+            <div style="position: relative; color: red;" id="IdNotWorkingYet">I don't do anything yet</div>
+        </div>
         
     </main>
     
     <footer class="footer-bottom-bar" id="PageFooter" style="height: 20px; float: inherit;  ">
-        <div class="button footer-button" style="background-size: auto; content: url(https://upload.wikimedia.org/wikipedia/commons/2/26/Gear-solid.svg)">settings</div>
-        <div class="button footer-button" style="background-size: auto; content: url(https://upload.wikimedia.org/wikipedia/commons/8/81/Email_new.svg)">contact</div>
-        <div class="button footer-button" style="background-size: auto; content: url(https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg)">github</div>
-        <div class="button footer-button" style="background-size: auto; content: url(https://upload.wikimedia.org/wikipedia/commons/7/7a/Bluesky_Logo.svg)">bluesky
-            <div>bluesky</div>
-        </div>
+        <!-- Settings button -->
+        <a  
+                onclick="ShowDoesNothingYet(this)"
+                class="button footer-button" 
+                style="background-size: auto; content: url(https://upload.wikimedia.org/wikipedia/commons/2/26/Gear-solid.svg)">settings</a>
+        <!-- Mail button -->
+        <a href="mailto:skutnik.martin@gmail.com" target="_blank"
+                class="button footer-button" 
+                style="background-size: auto; content: url(https://upload.wikimedia.org/wikipedia/commons/8/81/Email_new.svg)">contact</a>
+        <!-- Github button -->
+        <a href="https://github.com/Judosii" target="_blank"
+                class="button footer-button" 
+                style="background-size: auto; content: url(https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg)">github</a>
+        <!-- Bluesky button -->
+        <a href="https://bsky.app/profile/judosii.bsky.social" target="_blank"
+           class="button footer-button"
+           style="background-size: auto; content: url(https://upload.wikimedia.org/wikipedia/commons/7/7a/Bluesky_Logo.svg)">bluesky
+        </a>
     </footer>
+    
     
     
     <!-- Script starts here -->
@@ -145,8 +159,27 @@
         
     }
     
-    function BurgerTest(x) {
+    function BurgerClicked(x) {
         x.classList.toggle("change")
+        const box = document.querySelector(".burgerHolder") 
+        x.addEventListener("click", function(event) {
+            console.log(event)
+            if (event.target.closest(".burgerHolder"))return
+            console.log("print")
+            x.classList.toggle("change")
+        })
+    }
+    
+
+    function ShowDoesNothingYet(x){
+        x.appendChild(document.getElementById("IdNotWorkingYet"))
+        document.getElementById("IdNotWorkingYet").position = x.position
+        document.getElementById("IdNotWorkingYet").positionY += x.height
+        setTimeout(function() {HideDoesNothingYet(x)}, 5000)
+
+    }
+    function HideDoesNothingYet(x){
+        hideDiv.appendChild(x)
     }
     
     
