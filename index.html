@@ -16,7 +16,7 @@
      /* for now where I'm putting info */
     .main-container{
         height: min-content;
-        background-color: #c4c4c4   ;
+        background-color: var(--container-background-variant2)   ;
         width: 50%;
     }
     
@@ -25,43 +25,43 @@
         overflow: hidden;
         background-color: #7f7fa6;
     }
-     
-     
     </style>
+    <script type="text/javascript" src="js/main-js.js" defer></script>
     <link rel="stylesheet" href="css/main-style.css">
 </head>
 
 
-<body>
+<body id="IdMainBody">
     <!-- Comments here can be made like this -->
     
     <canvas id="animatedCanvasBackground"></canvas>
     <script src ="js/earthboundBackground.js" id="animatedCanvasBackgroundScript"></script>
    
     <!-- Header of the page! links to other pages mostly. -->
-    <header id="PageHeader" >
+    <header id="PageHeader"  >
         <nav class="container website-top-bar" role="navigation" style="float: inherit;">
-            <div style="float: left; margin-left: 50px">
-                <a class="button button-main" style=" color: #eeeeff" onclick="SwitchChild('Id_MainChild')"> MAIN  </a>
+            <div style="float: left; margin-left: 2vw">
+                <a class="button button-main" style=" color: var(--text-colorBase-1)" onclick="SwitchChild('Id_MainChild')"> MAIN  </a>
             </div>
-            <div style="float: right; margin-right: 50px; align-items: center">
-                <a class="button button-side" style=" color: #eeeeff; vertical-align: auto" onclick="SwitchChild('Id_AboutMeChild')"> •About me </a>
+            <div style="float: right; margin-right: 2vw; align-content: space-between; align-items: center; display: flex">
                 
-                <a class="burgerHolder" onclick="BurgerClicked(this)" style="justify-self: center">
+                <div class="button button-side" style=" color: var(--text-colorBase-1)" onclick="SwitchChild('Id_PortfolioChild')" > •Portfolio</div>
+                
+                <div class="burgerHolder" onclick="BurgerClicked(this)" style="justify-self: center">
                     <div class = "burger-bar1"></div>
                     <div class = "burger-bar2"></div>
                     <div class = "burger-bar3"></div>
-                </a>
-                <a class="button button-side" style=" color: #eeeeff;" onclick="SwitchChild('Id_ProjectsChild')"> •Projects
+                </div>
+                <div class="button button-side light-mode" style=" color: var(--text-colorBase-1)" onclick="SwitchChild('Id_ProjectsChild')"> •Projects
                     
-                </a>
+                </div>
 
-                <a class="burgerHolder" onclick="BurgerClicked(this)">
+                <div class="burgerHolder" onclick="BurgerClicked(this)">
                     <div class = "burger-bar1"></div>
                     <div class = "burger-bar2"></div>
                     <div class = "burger-bar3"></div>
-                </a>
-                <a class="button button-side" style=" color: #eeeeff;" onclick="SwitchChild('Id_PortfolioChild')" > •Portfolio</a>
+                </div>
+                <div class="button button-side" style=" color: var(--text-colorBase-1); vertical-align: auto" onclick="SwitchChild('Id_AboutMeChild')"> •About me </div>
             </div>
         </nav>
     </header>
@@ -70,39 +70,36 @@
     <main>
         <div class="container main-container" id="IdMainContainer" style="border: double 10px #eeeeff; border-radius: 10px" >
             <div class="container mainChild" id="Id_MainChild" >
-                <p style="color: #eeeeff; font-size: 32px"> Hello, i'm Judosii!</p>
-                <p style="color: #eeeeff; font-size: 32px"> This website is subject to change, and is for personal use only.</p>
-                <p style="color: #eeeeff; font-size: 32px; margin-bottom: 64px"> I may use it to show my projects and portfolio, so be aware of that.</p>
-                <p style="color: #eeeeff; font-size: 32px; margin-bottom: 64px">Also, the buttons at the top don't quite show a lot yet lol.</p>
+                <p style="color: var(--text-colorBase-1); font-size: 32px"> Hello, i'm Judosii!</p>
+                <p style="color: var(--text-colorBase-1); font-size: 32px"> This website is subject to change, and is for personal use only.</p>
+                <p style="color: var(--text-colorBase-1); font-size: 32px; margin-bottom: 64px"> I may use it to show my projects and portfolio, so be aware of that.</p>
+                <p style="color: var(--text-colorBase-1); font-size: 32px; margin-bottom: 64px">Also, the buttons at the top don't quite show a lot yet lol.</p>
                 
                 
             </div>
         </div>
-        <div id="IdHideHere" hidden="hidden">
-            <div style="position: relative; color: red;" id="IdNotWorkingYet">I don't do anything yet</div>
-        </div>
+        <div id="IdHideHere" hidden="hidden"></div>
         
     </main>
     
     <footer class="footer-bottom-bar" id="PageFooter" style="height: 20px; float: inherit;  ">
         <!-- Settings button -->
         <a  
-                onclick="ShowDoesNothingYet(this)"
+                onclick="SwitchTheme()"
                 class="button footer-button" 
-                style="background-size: auto; content: url(https://upload.wikimedia.org/wikipedia/commons/2/26/Gear-solid.svg)">settings</a>
+                style="background-size: auto; content: url(https://upload.wikimedia.org/wikipedia/commons/4/4b/Gear_icon-72a7cf.svg)"></a>
         <!-- Mail button -->
         <a href="mailto:skutnik.martin@gmail.com" target="_blank"
                 class="button footer-button" 
-                style="background-size: auto; content: url(https://upload.wikimedia.org/wikipedia/commons/8/81/Email_new.svg)">contact</a>
+                style="background-size: auto; content: url(https://upload.wikimedia.org/wikipedia/commons/8/81/Email_new.svg)"></a>
         <!-- Github button -->
         <a href="https://github.com/Judosii" target="_blank"
                 class="button footer-button" 
-                style="background-size: auto; content: url(https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg)">github</a>
+                style="background-size: auto; content: url(https://upload.wikimedia.org/wikipedia/commons/a/ae/Github-desktop-logo-symbol.svg)"></a>
         <!-- Bluesky button -->
         <a href="https://bsky.app/profile/judosii.bsky.social" target="_blank"
            class="button footer-button"
-           style="background-size: auto; content: url(https://upload.wikimedia.org/wikipedia/commons/7/7a/Bluesky_Logo.svg)">bluesky
-        </a>
+           style="background-size: auto; content: url(https://upload.wikimedia.org/wikipedia/commons/7/7a/Bluesky_Logo.svg)"></a>
     </footer>
     
     
@@ -161,28 +158,14 @@
     
     function BurgerClicked(x) {
         x.classList.toggle("change")
-        const box = document.querySelector(".burgerHolder") 
-        x.addEventListener("click", function(event) {
-            console.log(event)
-            if (event.target.closest(".burgerHolder"))return
-            console.log("print")
-            x.classList.toggle("change")
-        })
+        x.addEventListener("click", A(x))
     }
-    
-
-    function ShowDoesNothingYet(x){
-        x.appendChild(document.getElementById("IdNotWorkingYet"))
-        document.getElementById("IdNotWorkingYet").position = x.position
-        document.getElementById("IdNotWorkingYet").positionY += x.height
-        setTimeout(function() {HideDoesNothingYet(x)}, 5000)
-
+    function A(x) {
+        x.removeEventListener("click", A)
+        if (event.target.closest(".burgerHolder"))return
+        console.log("print")
+        x.classList.toggle("change")
     }
-    function HideDoesNothingYet(x){
-        hideDiv.appendChild(x)
-    }
-    
-    
 </script>
 
 </body>

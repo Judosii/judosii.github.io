@@ -1,3 +1,57 @@
+:root{
+    --container-primary-background: white;
+    --container-background-variant1: #b2b2b2;
+    --container-background-variant2: #9a9a9a;
+
+    --text-colorBase-1: black;
+    --text-colorBase-2: #262626;
+    --text-colorB-1: #000833;
+    --text-colorB-2: #2b3569;
+    --text-colorB-3: #4e5888;
+    --text-colorB-4: #8088b2;
+    --text-colorR-1: #330000;
+    --text-colorR-2: #591919;
+    --text-colorR-3: #864f4f;
+    --text-colorR-4: #be8989;
+    --text-colorG-1: #003304;
+    --text-colorG-2: #295919;
+    --text-colorG-3: #5a884b;
+    --text-colorG-4: #98b98d;
+    --text-colorY-1: #332f00;
+    --text-colorY-2: #594e19;
+    --text-colorY-3: #857c50;
+    --text-colorY-4: #c4bd9a;
+}
+
+.darkTheme{
+    --container-primary-background: #000000;
+    --container-background-variant1: #2c2c2c;
+    --container-background-variant2: #696969;
+
+    --text-colorBase-1: #ffffff;
+    --text-colorBase-2: #adadad;
+    --text-colorB-1: #7e89c4;
+    --text-colorB-2: #586294;
+    --text-colorB-3: #454d79;
+    --text-colorB-4: #373e67;
+    --text-colorR-1: #cc8181;
+    --text-colorR-2: #834040;
+    --text-colorR-3: #602929;
+    --text-colorR-4: #4f1f1f;
+    --text-colorG-1: #82c587;
+    --text-colorG-2: #588649;
+    --text-colorG-3: #39602c;
+    --text-colorG-4: #26461c;
+    --text-colorY-1: #d3b348;
+    --text-colorY-2: #756b3c;
+    --text-colorY-3: #544c25;
+    --text-colorY-4: #443d1d;
+}
+
+#theme-switch{
+    
+}
+
 body{
     margin: 0;
     overflow: hidden;
@@ -17,14 +71,14 @@ body{
     display: flex;
     overflow: hidden;
     height: auto;
-    background-color: #c4c4c4;
+    background-color: var(--container-primary-background);
     backdrop-filter: blur(10vh);
     justify-content: space-between;
 }
 
 .footer-bottom-bar{
     position: fixed;
-    background-color: #c4c4c4;
+    background-color: var(--container-primary-background);
     bottom: 0;
     height: auto;
     display: flex;
@@ -50,29 +104,29 @@ body{
 }
 .button:active{
     scale:90%;
-    background-color: #eeeeff;
+    background-color: var(--container-background-variant2);
 }
 .button-main{
     float: left;
     background-color: transparent;
 }
 .button-main:hover{
-    background-color: #5d620b;
+    background-color: var(--text-colorY-4);
 }
 .button-main:active{
-    background-color: #d9d4b8;
+    background-color: var(--text-colorY-3);
 }
 .button-side{
     margin: 0 0 0 20px;
     padding: 5px 2px 5px 2px;
-    float: right;
+    float: inherit;
     background-color: transparent;
 }
 .button-side:hover{
-    background-color: #14476b;
+    background-color: var(--text-colorB-4);
 }
 .button-side:active{
-    background-color: #afc6da;
+    background-color: var(--text-colorB-3);
 }
 
 .footer-button{
@@ -82,25 +136,26 @@ body{
     margin-right: 10px;
 }
 .footer-button:hover{
+    scale: 110%;
     rotate: 360deg;
 }
-.rotate .footer-button{transform: rotate(360deg) scale(1.1%)}
+.rotate .footer-button{transform: rotate(360deg)}
 
 /* the 3 lines to make an appearing & disappearing menu element that look like ||| */
 .burgerHolder{
-    margin: 2px 10px 2px 2px;
-    padding: 0;
-    float: right;
+    align-items: center;
+    margin-right: 10px;
+    margin-left: 4px;
+    padding: 2px;
+    float: inherit;
     background-color: transparent;
     cursor: pointer;
 }
-.burgerHolder:hover{
-    scale: 101%;
-}
+
 .burger-bar1, .burger-bar2, .burger-bar3 {
     width: 15px;
     height: 3px;
-    background-color: #333;
+    background-color: var(--text-colorBase-2);
     margin: 2px 0;
     transition: 0.4s;
 }
