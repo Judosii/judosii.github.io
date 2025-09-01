@@ -7,23 +7,10 @@
     <style>
      /* Head comments are done like this */
      /*  */
-    .container{
-        background-color: transparent;
-        position:relative;
-        margin: auto;
-        padding: 10px;
-    }
-     /* for now where I'm putting info */
-    .main-container{
-        height: min-content;
-        background-color: var(--container-background-variant2)   ;
-        width: 50%;
-    }
     
     body{
         margin: 0;
         overflow: hidden;
-        background-color: #7f7fa6;
     }
     </style>
     <script type="text/javascript" src="js/main-js.js" defer></script>
@@ -38,16 +25,16 @@
     <script src ="js/earthboundBackground.js" id="animatedCanvasBackgroundScript"></script>
    
     <!-- Header of the page! links to other pages mostly. -->
-    <header id="PageHeader"  >
-        <nav class="container website-top-bar" role="navigation" style="float: inherit;">
+    <header id="PageHeader">
+        <nav class="container website-top-bar" role="navigation" style="float: inherit; background-color: var(--container-primary-background) ">
             <div style="float: left; margin-left: 2vw">
                 <a class="button button-main" style=" color: var(--text-colorBase-1)" onclick="SwitchChild('Id_MainChild')"> MAIN  </a>
             </div>
-            <div style="float: right; margin-right: 2vw; align-content: space-between; align-items: center; display: flex">
+            <div style="float: right; margin-right: 2vw; align-content: space-between; align-items: center; display: flex; overflow-x: auto">
                 
                 <div class="button button-side" style=" color: var(--text-colorBase-1)" onclick="SwitchChild('Id_PortfolioChild')" > •Portfolio</div>
                 
-                <div class="burgerHolder" onclick="BurgerClicked(this)" style="justify-self: center">
+                <div class="burgerHolder" onclick="BurgerClicked(this,'Id_burgPortfolio')" style="justify-self: center">
                     <div class = "burger-bar1"></div>
                     <div class = "burger-bar2"></div>
                     <div class = "burger-bar3"></div>
@@ -56,7 +43,7 @@
                     
                 </div>
 
-                <div class="burgerHolder" onclick="BurgerClicked(this)">
+                <div class="burgerHolder" onclick="BurgerClicked(this, 'Id_burgProjects')">
                     <div class = "burger-bar1"></div>
                     <div class = "burger-bar2"></div>
                     <div class = "burger-bar3"></div>
@@ -68,7 +55,7 @@
     
     
     <main>
-        <div class="container main-container" id="IdMainContainer" style="border: double 10px #eeeeff; border-radius: 10px" >
+        <div class="container main-container" id="IdMainContainer" style="border: double 10px #eeeeff; border-radius: 10px; overflow-y: auto" >
             <div class="container mainChild" id="Id_MainChild" >
                 <p style="color: var(--text-colorBase-1); font-size: 32px"> Hello, i'm Judosii!</p>
                 <p style="color: var(--text-colorBase-1); font-size: 32px"> This website is subject to change, and is for personal use only.</p>
@@ -78,7 +65,8 @@
                 
             </div>
         </div>
-        <div id="IdHideHere" hidden="hidden"></div>
+        <div id="IdHideHere" hidden="hidden">
+        </div>
         
     </main>
     
@@ -108,7 +96,18 @@
 <script>
     const mainContainer = document.getElementById("IdMainContainer");
     const hideDiv = document.getElementById("IdHideHere");
-
+    
+    function ObjIdExists(objId){
+        return document.getElementById(objId) !== null;
+    }
+    function CreateObjById(objId, filePath){
+        let newObj = document.createElement("div");
+        newObj.id = objId;
+        let wantedFile = filePath+objId.replace(/^Id_/,'').replace(/Child$/,'' + ".html") ;
+        FetchHtmlFile(wantedFile, newObj)
+        return newObj
+    }
+    
     function SwitchChild(newChildIdString){
         let curChild = mainContainer.firstElementChild
         console.log("-- desired child is: ",curChild.id," --");
@@ -122,50 +121,73 @@
 
         // to make the next child, check if it doesn't already exist
         let newChild
-        if(document.getElementById(newChildIdString) !== null){
-            console.log("file is already on the page!")
+        if (ObjIdExists(newChildIdString))
+        {
             newChild = document.getElementById(newChildIdString);
             newChild.hidden = false;
         }
-        else {
-            newChild = document.createElement("div");
-            newChild.id = newChildIdString;
-
-            let wantedFile = newChildIdString.replace(/^Id_/,'').replace(/Child$/,'' + ".html") ;
-            console.log("seeking file "+ wantedFile + " in directory htmls")
-            
-            FetchHtmlFile(wantedFile, newChild)
-            
-            //FetchHtmlFile(wantedFile, newChild)
-            }
+        else {newChild = CreateObjById(newChildIdString, "htmls/")}
             
         mainContainer.appendChild(newChild)
     }
-
-
-    async function FetchHtmlFile(wantedFileString, targetEl){
-        fetch("htmls/"+ wantedFileString)
-            .then(res => {
-                if(res.ok){
-                    return res.text()
+    
+    function BurgerClicked(burg, menuId, menuFilePath = "htmls/menus/") {
+        if(burg.classList.contains("change") === false) //pressing to open menu
+        {
+            let menuObj = document.getElementById(menuId)
+            if(ObjIdExists(menuId) === false){menuObj = CreateObjById(menuId, menuFilePath)}
+            else{menuObj = document.getElementById(menuId)}
+            //burg.appendChild(menuObj)
+            mainContainer.parentElement.appendChild(menuObj)
+            PlaceMenuPopupMenu(burg, menuObj)
+            
+            document.addEventListener("click", function(event){
+                if (event.target.closest(".burgerHolder")){return}
+                event.stopImmediatePropagation()
+                hideDiv.appendChild(menuObj)
+                if(burg.classList.contains("change"))
+                {
+                    burg.classList.toggle("change")
                 }
             })
-            .then(htmlSnippet => {
-                targetEl.innerHTML = htmlSnippet
-            })
-        
+        }
+        else // clicking to close menu
+        {
+            hideDiv.appendChild(document.getElementById(menuId));
+        }
+        burg.classList.toggle("change") // change burger into a cross
     }
     
-    function BurgerClicked(x) {
-        x.classList.toggle("change")
-        x.addEventListener("click", A(x))
+    function PlaceMenuPopupMenu(originBtn, menuObj){
+        const menuOffset = 8;
+        const btnRect = originBtn.getBoundingClientRect();
+        const menuRect = menuObj.getBoundingClientRect();
+        
+        const viewportHeight = window.innerHeight;
+        const viewportWidth = window.innerWidth;
+        
+        const spaceBelow = viewportHeight - btnRect.bottom;
+        const spaceAbove = btnRect.top;
+        let top
+        if(spaceBelow >= menuRect.height + menuOffset || spaceBelow >= spaceAbove){
+            top = btnRect.bottom + menuOffset
+        }
+        else{
+            top = btnRect.top - menuRect.height - menuOffset
+        }
+        
+        let left = btnRect.left + (btnRect.width/2) - (menuRect.width/2)
+        
+        if(left<0){left = menuOffset}
+        if(left + menuRect.width > viewportWidth){left= viewportWidth - menuRect.width - menuOffset}
+
+        //menuObj.style.top = `${top}px`
+        //menuObj.style.left = `${left}px`
+        menuObj.top = `${top}px`
+        menuObj.left = `${left}px`
     }
-    function A(x) {
-        x.removeEventListener("click", A)
-        if (event.target.closest(".burgerHolder"))return
-        console.log("print")
-        x.classList.toggle("change")
-    }
+    
+    
 </script>
 
 </body>

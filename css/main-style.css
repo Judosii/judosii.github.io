@@ -72,7 +72,6 @@ body{
     overflow: hidden;
     height: auto;
     background-color: var(--container-primary-background);
-    backdrop-filter: blur(10vh);
     justify-content: space-between;
 }
 
@@ -91,6 +90,7 @@ body{
 
 .button {
      border: none;
+    border-radius: 5px;
      padding: 7px 15px 7px 15px;
      display: inline-block;
      justify-content: center;
@@ -193,4 +193,27 @@ body{
     margin-top: 1rem;
     font-size: 1.2rem;
     font-weight: bold;
+}
+
+/* all different containers*/
+.container{
+    background-color: transparent;
+    position:relative;
+    margin: auto;
+    padding: 10px;
+}
+/* for now where I'm putting info */
+.main-container{
+    margin-bottom: 15px;
+    margin-top: 15px;
+    height: min-content;
+    background-color: var(--container-background-variant2)   ;
+    width: 50%;
+}
+
+.burger-menu-container{
+    padding: 10px;
+    border: var(--text-colorY-1);
+    border-radius: 3px;
+    
 }
