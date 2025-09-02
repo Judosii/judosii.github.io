@@ -27,19 +27,21 @@
     <!-- Header of the page! links to other pages mostly. -->
     <header id="PageHeader">
         <nav class="container website-top-bar" role="navigation" style="float: inherit; background-color: var(--container-primary-background) ">
+            
             <div style="float: left; margin-left: 2vw">
                 <a class="button button-main" style=" color: var(--text-colorBase-1)" onclick="SwitchChild('Id_MainChild')"> MAIN  </a>
             </div>
+            
             <div style="float: right; margin-right: 2vw; align-content: space-between; align-items: center; display: flex; overflow-x: auto">
                 
-                <div class="button button-side" style=" color: var(--text-colorBase-1)" onclick="SwitchChild('Id_PortfolioChild')" > •Portfolio</div>
+                <div class="button button-side" style="color: var(--text-colorBase-1)" onclick="SwitchChild('Id_PortfolioChild')" > •Portfolio</div>
                 
                 <div class="burgerHolder" onclick="BurgerClicked(this,'Id_burgPortfolio')" style="justify-self: center">
                     <div class = "burger-bar1"></div>
                     <div class = "burger-bar2"></div>
                     <div class = "burger-bar3"></div>
                 </div>
-                <div class="button button-side light-mode" style=" color: var(--text-colorBase-1)" onclick="SwitchChild('Id_ProjectsChild')"> •Projects
+                <div class="button button-side" style=" color: var(--text-colorBase-1)" onclick="SwitchChild('Id_ProjectsChild')"> •Projects
                     
                 </div>
 
@@ -100,8 +102,8 @@
     function ObjIdExists(objId){
         return document.getElementById(objId) !== null;
     }
-    function CreateObjById(objId, filePath){
-        let newObj = document.createElement("div");
+    function CreateObjById(objId, filePath, elType = "div"){
+        let newObj = document.createElement(elType);
         newObj.id = objId;
         let wantedFile = filePath+objId.replace(/^Id_/,'').replace(/Child$/,'' + ".html") ;
         FetchHtmlFile(wantedFile, newObj)
@@ -135,10 +137,12 @@
         if(burg.classList.contains("change") === false) //pressing to open menu
         {
             let menuObj = document.getElementById(menuId)
-            if(ObjIdExists(menuId) === false){menuObj = CreateObjById(menuId, menuFilePath)}
+            if(ObjIdExists(menuId) === false){menuObj = CreateObjById(menuId, menuFilePath); menuObj.classList.add(".popup-menu")}
             else{menuObj = document.getElementById(menuId)}
             //burg.appendChild(menuObj)
-            mainContainer.parentElement.appendChild(menuObj)
+            //document.append(menuObj)
+            document.body.appendChild(menuObj)
+            
             PlaceMenuPopupMenu(burg, menuObj)
             
             document.addEventListener("click", function(event){
@@ -159,32 +163,18 @@
     }
     
     function PlaceMenuPopupMenu(originBtn, menuObj){
-        const menuOffset = 8;
-        const btnRect = originBtn.getBoundingClientRect();
-        const menuRect = menuObj.getBoundingClientRect();
+        const headerRect = document.getElementById("PageHeader").getBoundingClientRect()
+        const btnRect = originBtn.getBoundingClientRect()
+        const ObjRect = menuObj.getBoundingClientRect()
         
-        const viewportHeight = window.innerHeight;
-        const viewportWidth = window.innerWidth;
+        menuObj.style.position = 'absolute';
         
-        const spaceBelow = viewportHeight - btnRect.bottom;
-        const spaceAbove = btnRect.top;
-        let top
-        if(spaceBelow >= menuRect.height + menuOffset || spaceBelow >= spaceAbove){
-            top = btnRect.bottom + menuOffset
-        }
-        else{
-            top = btnRect.top - menuRect.height - menuOffset
-        }
+        menuObj.style.left = btnRect.left - ObjRect.width/2 + "px"
+        menuObj.style.top = headerRect.bottom + "px"
+        menuObj.style.display = "block";
         
-        let left = btnRect.left + (btnRect.width/2) - (menuRect.width/2)
+        console.log(ObjRect.width)
         
-        if(left<0){left = menuOffset}
-        if(left + menuRect.width > viewportWidth){left= viewportWidth - menuRect.width - menuOffset}
-
-        //menuObj.style.top = `${top}px`
-        //menuObj.style.left = `${left}px`
-        menuObj.top = `${top}px`
-        menuObj.left = `${left}px`
     }
     
     

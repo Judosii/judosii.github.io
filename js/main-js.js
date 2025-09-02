@@ -13,6 +13,7 @@ function DisableDarkMode(){
     localStorage.setItem('darkTheme', null)
 }
 
+
 // -- ASYNC FUNCTIONS --
 async function FetchHtmlFile(wantedFileString, targetEl){
     fetch(wantedFileString)
@@ -24,8 +25,4 @@ async function FetchHtmlFile(wantedFileString, targetEl){
         .then(htmlSnippet => {
             targetEl.innerHTML = htmlSnippet
         })
-}
-
-async function GetAllFilesInFolder(wantedFolderString){
-    fetch()
 }

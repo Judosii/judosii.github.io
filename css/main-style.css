@@ -201,13 +201,14 @@ body{
     position:relative;
     margin: auto;
     padding: 10px;
+    box-shadow: 10px var(--text-colorBase-1);
 }
 /* for now where I'm putting info */
 .main-container{
     margin-bottom: 15px;
     margin-top: 15px;
     height: min-content;
-    background-color: var(--container-background-variant2)   ;
+    background-color: var(--container-background-variant2);
     width: 50%;
 }
 
@@ -215,5 +216,12 @@ body{
     padding: 10px;
     border: var(--text-colorY-1);
     border-radius: 3px;
-    
+}
+
+.popup-menu{
+    position: absolute;
+    max-height: 500px;
+    min-width: auto;
+    overflow-y: auto;
+    left: -50%;
 }
