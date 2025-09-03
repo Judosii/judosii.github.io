@@ -59,10 +59,11 @@
     <main>
         <div class="container main-container" id="IdMainContainer" style="border: double 10px #eeeeff; border-radius: 10px; overflow-y: auto" >
             <div class="container mainChild" id="Id_MainChild" >
-                <p style="color: var(--text-colorBase-1); font-size: 32px"> Hello, i'm Judosii!</p>
-                <p style="color: var(--text-colorBase-1); font-size: 32px"> This website is subject to change, and is for personal use only.</p>
-                <p style="color: var(--text-colorBase-1); font-size: 32px; margin-bottom: 64px"> I may use it to show my projects and portfolio, so be aware of that.</p>
-                <p style="color: var(--text-colorBase-1); font-size: 32px; margin-bottom: 64px">Also, the buttons at the top don't quite show a lot yet lol.</p>
+                <p class="basic-text"> Hello, i'm Judosii!</p>
+                <p class="basic-text"> This website is subject to change, and is for personal use only.</p>
+                <p class="basic-text"> I may use it to show my projects and portfolio, so be aware of that.</p>
+                <p class="basic-text">Also, the buttons at the top don't quite show a lot yet lol.</p>
+                <p class="basic-text">Slight glitch to fix later, burger buttons at the top kinda don't position themselves well on first push.</p>
                 
                 
             </div>
@@ -110,25 +111,16 @@
         return newObj
     }
     
-    function SwitchChild(newChildIdString){
+    function SwitchChild(newChildIdString, newChildFilePath = "htmls/"){
         let curChild = mainContainer.firstElementChild
-        console.log("-- desired child is: ",curChild.id," --");
         
-        if (curChild.id === newChildIdString ){
-            console.log("current child is the desired child");
-            return;
-        }
-        console.log("hiding ", curChild.id, "...");
+        if (curChild.id === newChildIdString ){return;}
         hideDiv.appendChild(curChild);
 
-        // to make the next child, check if it doesn't already exist
         let newChild
         if (ObjIdExists(newChildIdString))
-        {
-            newChild = document.getElementById(newChildIdString);
-            newChild.hidden = false;
-        }
-        else {newChild = CreateObjById(newChildIdString, "htmls/")}
+        {newChild = document.getElementById(newChildIdString);newChild.hidden = false;}
+        else {newChild = CreateObjById(newChildIdString, newChildFilePath)}
             
         mainContainer.appendChild(newChild)
     }
@@ -137,7 +129,11 @@
         if(burg.classList.contains("change") === false) //pressing to open menu
         {
             let menuObj = document.getElementById(menuId)
-            if(ObjIdExists(menuId) === false){menuObj = CreateObjById(menuId, menuFilePath); menuObj.classList.add(".popup-menu")}
+            if(ObjIdExists(menuId) === false)
+            {
+                menuObj = CreateObjById(menuId, menuFilePath);
+                menuObj.classList.add(".popup-menu")
+            }
             else{menuObj = document.getElementById(menuId)}
             //burg.appendChild(menuObj)
             //document.append(menuObj)
@@ -150,9 +146,7 @@
                 event.stopImmediatePropagation()
                 hideDiv.appendChild(menuObj)
                 if(burg.classList.contains("change"))
-                {
-                    burg.classList.toggle("change")
-                }
+                {burg.classList.toggle("change")}
             })
         }
         else // clicking to close menu
@@ -163,18 +157,17 @@
     }
     
     function PlaceMenuPopupMenu(originBtn, menuObj){
+        menuObj.style.position = 'absolute';
         const headerRect = document.getElementById("PageHeader").getBoundingClientRect()
         const btnRect = originBtn.getBoundingClientRect()
         const ObjRect = menuObj.getBoundingClientRect()
         
-        menuObj.style.position = 'absolute';
         
         menuObj.style.left = btnRect.left - ObjRect.width/2 + "px"
         menuObj.style.top = headerRect.bottom + "px"
         menuObj.style.display = "block";
         
         console.log(ObjRect.width)
-        
     }
     
     
