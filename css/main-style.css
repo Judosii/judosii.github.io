@@ -58,6 +58,18 @@ body{
     background-color: #7f7fa6;
 }
 
+.basic-text{
+    color: var(--text-colorBase-1);
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.lower-text{
+    color: var(--text-colorBase-2);
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
 #animatedCanvasBackground{
     position:absolute;
     /*background: black;*/
@@ -226,14 +238,3 @@ body{
     left: -50%;
 }
 
-.basic-text{
-    color: var(--text-colorBase-1);
-    font-size: 32px;
-    margin-bottom: 10px;
-}
-
-.lower-text{
-    color: var(--text-colorBase-2);
-    font-size: 16px;
-    margin-bottom: 10px;
-}
