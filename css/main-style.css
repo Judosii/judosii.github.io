@@ -98,6 +98,62 @@ body{
     width: 100%;
 }
 
+/* all different containers*/
+.container{
+    background-color: transparent;
+    position:relative;
+    margin: auto;
+    padding: 10px;
+    box-shadow: 10px var(--text-colorBase-1);
+}
+
+.main-container{
+    margin-bottom: 15px;
+    margin-top: 15px;
+    height: min-content;
+    background-color: var(--container-background-variant2);
+    overflow-x: inherit;
+    width: 75%;
+}
+
+.burger-menu-container{
+    padding: 10px;
+    border: var(--text-colorY-1);
+    border-radius: 3px;
+}
+
+.popup-menu{
+    position: absolute;
+    max-height: 500px;
+    min-width: auto;
+    overflow-y: auto;
+    left: -50%;
+}
+
+.project-container-showoff{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 3px;
+}
+
+.portfolio-project-container{
+    flex: 1 1 calc(33.333% - 1rem);
+    max-width: calc(33.333% - 1rem);
+    box-sizing: border-box;
+}
+.portfolio-project-container:hover{
+    scale: 101%;
+}
+
+.project-image{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border: 2px solid var(--text-colorBase-2);
+}
+
 /* Button shenanigan */
 
 .button {
@@ -176,65 +232,4 @@ body{
 .change .burger-bar3 {transform: translate(0, -5px) rotate(405deg);}
 
 
-/* portfolio project spaces */
-.portfolio-box {
-    width: auto;
-    position: relative;
-    border: 4px solid white;
-    padding: 2rem 1.5rem 1.5rem;
-    margin: 20px;
-    text-align: center;
-    color: revert;
-    background: transparent;
-}
-
-.portfolio-box-title {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: white;
-    background: #000000;
-    padding: 0 10px;
-    font-size: 1.5rem;
-    font-weight: bold;
-}
-
-.portfolio-box-content {
-    color: white;
-    margin-top: 1rem;
-    font-size: 1.2rem;
-    font-weight: bold;
-}
-
-/* all different containers*/
-.container{
-    background-color: transparent;
-    position:relative;
-    margin: auto;
-    padding: 10px;
-    box-shadow: 10px var(--text-colorBase-1);
-}
-/* for now where I'm putting info */
-.main-container{
-    margin-bottom: 15px;
-    margin-top: 15px;
-    height: min-content;
-    background-color: var(--container-background-variant2);
-    width: 50%;
-}
-
-.burger-menu-container{
-    padding: 10px;
-    border: var(--text-colorY-1);
-    border-radius: 3px;
-}
-
-.popup-menu{
-    position: absolute;
-    max-height: 500px;
-    min-width: auto;
-    overflow-y: auto;
-    left: -50%;
-}
 
