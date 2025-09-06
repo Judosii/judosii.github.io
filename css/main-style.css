@@ -136,13 +136,15 @@ body{
     justify-content: space-between;
     gap: 3px;
     border: 3px solid var(--container-background-variant2);
-    background-color: var(--text-colorB-4);
+    background-color: var(--text-colorY-4);
 }
 
 .portfolio-project-container{
     flex: 1 1 calc(33.333% - 1rem);
     max-width: calc(33.333% - 1rem);
     box-sizing: border-box;
+    border: 3px solid var(--text-colorR-4);
+    margin: 5px;
 }
 .portfolio-project-container:hover{
     scale: 101%;
