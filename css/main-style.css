@@ -146,9 +146,11 @@ body{
     border: 3px solid var(--text-colorR-4);
     padding: 3px;
     margin: 5px;
+    background-color: var(--text-colorY-4)
 }
 .portfolio-project-container:hover{
     scale: 101%;
+    background-color: var(--text-colorY-3)
 }
 
 .project-image{
