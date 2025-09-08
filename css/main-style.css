@@ -161,6 +161,7 @@ body{
     object-fit: contain;
     display: block;
     border: 2px solid var(--text-colorBase-2);
+    box-sizing: border-box;
 }
 
 /* Button shenanigan */
