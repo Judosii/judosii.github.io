@@ -123,6 +123,18 @@
         else {newChild = CreateObjById(newChildIdString, newChildFilePath)}
             
         mainContainer.appendChild(newChild)
+        ResizeMainContainer()
+    }
+    
+    function ResizeMainContainer(){
+        const screenHeight = innerHeight;
+        const headerHeight = document.getElementById("PageHeader").height
+        const footerHeight = document.getElementById("PageFooter").height
+        
+        mainContainer.top = headerHeight
+        
+        mainContainer.style.maxHeight = screenHeight - headerHeight - footerHeight + 'px'
+        //const curSize = mainContainer.height
     }
     
     function BurgerClicked(burg, menuId, menuFilePath = "htmls/menus/") {
