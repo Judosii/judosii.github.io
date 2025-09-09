@@ -111,8 +111,11 @@ body{
     margin-bottom: 15px;
     margin-top: 15px;
     height: min-content;
-    background-color: var(--container-background-variant2);
+    /*background-color: var(--container-background-variant2);*/
+    background: linear-gradient(90deg,var(--container-primary-background) 0%,
+    var(--container-background-variant1)1%,  var(--container-background-variant1)99%, var(--container-primary-background))100%;
     overflow-x: inherit;
+    overflow-y: auto;
     width: 75%;
 }
 
