@@ -25,7 +25,7 @@
     <script src ="js/earthboundBackground.js" id="animatedCanvasBackgroundScript"></script>
    
     <!-- Header of the page! links to other pages mostly. -->
-    <header id="PageHeader">
+    <header id="PageHeader"style="width: 100%" >
         <nav class="container website-top-bar" role="navigation" style="float: inherit; background-color: var(--container-primary-background) ">
             
             <div style="float: left; margin-left: 2vw">
@@ -131,9 +131,14 @@
         const headerHeight = document.getElementById("PageHeader").height
         const footerHeight = document.getElementById("PageFooter").height
         
+        const spaceLeft = screenHeight - headerHeight - footerHeight
         mainContainer.top = headerHeight
         
-        mainContainer.style.maxHeight = screenHeight - headerHeight - footerHeight + 'px'
+        if(mainContainer.height> spaceLeft){
+            console.log("had to resize mainContainer")
+            mainContainer.height = spaceLeft+'px'
+        }
+        console.log(mainContainer.height)
         //const curSize = mainContainer.height
     }
     

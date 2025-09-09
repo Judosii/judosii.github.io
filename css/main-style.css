@@ -141,6 +141,7 @@ body{
 }
 
 .portfolio-project-container{
+    transition-duration: 0.1s;
     flex: 1 1 calc(33.333% - 1rem);
     max-width: calc(33.333% - 1rem);
     box-sizing: border-box;
