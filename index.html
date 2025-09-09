@@ -127,9 +127,9 @@
     }
     
     function ResizeMainContainer(){
-        const screenHeight = innerHeight;
-        const headerHeight = document.getElementById("PageHeader").height
-        const footerHeight = document.getElementById("PageFooter").height
+        const screenHeight = document.getBoundingClientRect().height
+        const headerHeight = document.getElementById("PageHeader").getBoundingClientRect().height
+        const footerHeight = document.getElementById("PageFooter").getBoundingClientRect().height
         
         const spaceLeft = screenHeight - headerHeight - footerHeight
         mainContainer.top = headerHeight
