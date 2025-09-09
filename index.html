@@ -53,6 +53,7 @@
                 <div class="button button-side" style=" color: var(--text-colorBase-1); vertical-align: auto" onclick="SwitchChild('Id_AboutMeChild')"> •About me </div>
             </div>
         </nav>
+        <div style="background: linear-gradient(var(--container-primary-background)0%, var(--container-background-variant2)100%);height: 3px"></div>
     </header>
     
     
@@ -123,22 +124,6 @@
         else {newChild = CreateObjById(newChildIdString, newChildFilePath)}
             
         mainContainer.appendChild(newChild)
-    }
-    
-    function ResizeMainContainer(){
-        const screenHeight = document.getBoundingClientRect().height
-        const headerHeight = document.getElementById("PageHeader").getBoundingClientRect().height
-        const footerHeight = document.getElementById("PageFooter").getBoundingClientRect().height
-        
-        const spaceLeft = screenHeight - headerHeight - footerHeight
-        mainContainer.top = headerHeight
-        
-        if(mainContainer.height> spaceLeft){
-            console.log("had to resize mainContainer")
-            mainContainer.height = spaceLeft+'px'
-        }
-        console.log(mainContainer.height)
-        //const curSize = mainContainer.height
     }
     
     function BurgerClicked(burg, menuId, menuFilePath = "htmls/menus/") {

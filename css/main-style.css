@@ -111,7 +111,7 @@ body{
     margin-bottom: 15px;
     margin-top: 15px;
     height: min-content;
-    max-height: 900px;
+    max-height: 80vh;
     /*background-color: var(--container-background-variant2);*/
     background: linear-gradient(90deg,var(--container-primary-background) 0%,
     var(--container-background-variant1)0.5%,  var(--container-background-variant1)99.5%, var(--container-primary-background))100%;
