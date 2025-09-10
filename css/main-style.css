@@ -150,9 +150,9 @@ body{
     max-width: calc(33.333% - 1rem);
     box-sizing: border-box;
     border: 3px solid var(--text-colorR-4);
+    background-color: var(--text-colorR-4);
     padding: 3px;
     margin: 5px;
-    background-color: var(--text-colorR-4);
     cursor: pointer;
 }
 .portfolio-project-container:hover{
