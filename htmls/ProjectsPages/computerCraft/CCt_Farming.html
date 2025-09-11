@@ -1,21 +1,33 @@
 ﻿<body>
+<div style="display: flex">
+    <div><img src="https://tekkitwiki.com/w/images/tekkitwiki/3/3a/Computercraft_Logo.png" alt="CCTitle" width="310" height="108" style="margin-bottom: 20px">
+    </div>
+    <div>
+        <img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/0/0b/Wheat_Age_6_JE6_BE1.png"
+             alt="wheat" width="108" height="108">
+    </div>
+</div>
 
-<div><img src="https://tekkitwiki.com/w/images/tekkitwiki/3/3a/Computercraft_Logo.png" alt="Title Unlog" width="310" height="108" style="margin-bottom: 20px"> </div>
 <div style="display:flex; align-content: center;">
     <div> <!-- text -->
-        <p class="basic-text">This page is to keep track of Lua scripts I made that function with ComputerCraft:tweaked ! </p>
-        <p class="basic-text">I will also have downloads available for those that want to use them, though I cannot guarantee your implementation of them. </p>
-        <p class="basic-text">Be it using turtles or computers wired together, I plan on using this mod to make my time playing <i>Create:Above and Beyond</i> easier. And hey, if it makes me a better programmer, so be it!</p>
-        <p class="basic-text"></p>
-        <p class="basic-text"></p>
+        <p class="basic-text">This script is really easy. just put it in a turtle and watch it go! </p>
+        <p class="basic-text">Just make sure the farm this turtle is put on is a square, and the turtle starts at the bottom left corner.</p>
+        <p class="basic-text">It's hard-coded to work from that position, with a rectangular farm shape!</p>
+        <p class="basic-text">The script can work for any kind of farm; wheat, carrots, potatoes... it also works with some modded crops in mind!</p>
     </div>
-    <div style="background-color: var(--container-background-variant1); border: 3px solid var(--text-colorBase-2); width: 720px; height: 480px;"> <!-- image -->
-        <img src="https://preview.redd.it/any-modpacks-which-strongly-encourage-using-computercraft-v0-q0qru93hzxbe1.jpg?width=2125&format=pjpg&auto=webp&s=ac5d77fc720ad12e5df55e217d0b096ce89c622e" alt="" height="480" width="720">
+    <div style="display: inline-grid">
+        <div style="background-color: var(--container-background-variant1); border: 3px solid var(--text-colorBase-2); width: 720px; height: 480px;"> <!-- image -->
+            <img src="../../../img/LuaComputerCraft/Icogram%202025-09-11%2016_47.png" alt="" width="720" height="480">
+        </div>
+        <div> <a class="button" style="content: url(https://upload.wikimedia.org/wikipedia/commons/2/2e/Download_icon_black.svg); height: 32px; width: auto; background-color: dodgerblue;" 
+                 href="../../../files/computerCraft/Judosii_farmCode_110924.lua" download=""></a></div>
     </div>
-    <p class="basic-text"></p>
-</div>
-<div style="display:flex; align-content: center;">
-    <p class="basic-text"></p>
     
+</div>
+
+<div style="display:inline-block; align-content: center;">
+    <p class="basic-text">As for crops that are 2 blocks high, it does check below itself if it does not detect a plant.</p>
+    <p class="basic-text">And finally, the turtle will replant behind himself, after harvesting!</p>
+
 </div>
 </body>
