@@ -124,14 +124,8 @@ function Drawbackground() {
                 );
             }
         }
-
-        // ---- PALETTE CYCLING ----
-        if (Math.floor(time * 10) % distortion.paletteCycleSpeed === 0) {
-            paletteCycle();
-        }
-
         // update time
-        time += 0.05;
+        time += 0.01;
     }
 
     requestAnimationFrame(Drawbackground);
