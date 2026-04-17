@@ -105,8 +105,8 @@ function Drawbackground() {
                 distortion.verticalAmp;
 
             let sxOffset = horiz + interleave;
-            let sy = (y + vert) % buffer.height;
-            if (sy < 0) sy += buffer.height;
+            sxOffset = Math.max(-buffer.width, Math.min(buffer.width, sxOffset));
+            let sy = ((y + vert) % buffer.height + buffer.height) % buffer.height;
 
             // ---- FIX: TILE HORIZONTALLY ----
             let tileWidth = buffer.width;
